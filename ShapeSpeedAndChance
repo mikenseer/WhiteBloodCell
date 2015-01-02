@@ -8,6 +8,7 @@ namespace SHAPES
 	//Will make these private once testing is complete
 	public float maxSpeed = -10f;
 	public float minSpeed = -3f;
+	public float speedBoost = .2f;
 	public float maxSpawn = .8f;
 	public float minSpawn = .2f;
 	
@@ -37,7 +38,7 @@ namespace SHAPES
 			}
 			
 			else{
-			fallspeed = maxSpeed + (.2 * multiplier);			
+			fallspeed = maxSpeed + (boostSpeed * multiplier);			
 			}
 			
 	
