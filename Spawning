@@ -1,0 +1,31 @@
+using System;
+
+namespace SHAPES
+{
+ public  class ShapesSpawning
+    {
+      private int fallSpeed;
+    
+	    private int[] activeShapes;
+      void Start(){
+        activeShapes = GameObject.FindGameObjectsWithTag("ShapeObject");
+      }
+
+  		void Update(){
+  		  if (fallSpeed != vars.fallSpeed){
+    			if (activeShapes.Length > 0){
+    			  CancelInvoke("Spawn");
+    			}
+    			else if (activeShapes.Length == 0){
+    			  InvokeTheInvoke();
+    			}
+  			}
+  		}
+  	  void InvokeTheInvoke(){
+  	    //Code to invokerepeating spawn
+  	  }
+	
+		
+	
+	
+	}
