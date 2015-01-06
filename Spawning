@@ -1,31 +1,129 @@
-using System;
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
-namespace SHAPES
-{
- public  class ShapesSpawning
-    {
-      private int fallSpeed;
-    
-	    private int[] activeShapes;
-      void Start(){
-        activeShapes = GameObject.FindGameObjectsWithTag("ShapeObject");
-      }
+public class ShapeSpawn : MonoBehaviour {
 
-  		void Update(){
-  		  if (fallSpeed != vars.fallSpeed){
-    			if (activeShapes.Length > 0){
-    			  CancelInvoke("Spawn");
-    			}
-    			else if (activeShapes.Length == 0){
-    			  InvokeTheInvoke();
-    			}
-  			}
-  		}
-  	  void InvokeTheInvoke(){
-  	    //Code to invokerepeating spawn
-  	  }
-	
+	private Variables vars;
+
+	//spawnTime may be changed into multiple floats for the InvokeRepeating command
+	private float spawnTime;
+	public GameObject shapeObject;
+
+	//The spawn locations
+	public Transform spawn01,spawn02,spawn03,spawn04,spawn05,spawn06;
+	private int spawnNumber;
+
+	//tota number of shapes
+	private int pooledAmount;
+	List<GameObject> shapesQueue;
+
+	//May need to change this to Update() in order to allow variable changing mid game.
+	void Start () {
+
+		//Variables
+		GameObject v1 = GameObject.FindGameObjectWithTag ("Variables");
+		vars = v1.GetComponent<Variables> ();
 		
-	
+
+		spawnTime = vars.spawnTimeV;
+		pooledAmount = vars.pooledAmountV;
+
+		//The Shapes queue pool	
+		shapesQueue = new List<GameObject>();
+		ShapeObjectPool (vars.pooledAmountV);
+
+
+		//InvokeSpawn ();
+
+	}
+
+	void Update(){
+
+		//If active shapes count > 0 then don't spawn shapes
+
+		if (spawnTime != vars.spawnTimeV) {
+			CancelInvoke("Spawn");
+			spawnTime = vars.spawnTimeV;
+			Invoke ("InvokeSpawn", .6f);
+		}
+		if (pooledAmount != vars.pooledAmountV) {
+		
+			pooledAmount = vars.pooledAmountV;
+			ShapeObjectPool(pooledAmount);
+		
+		}
+
+	}
+
+	void ShapeObjectPool(int pool){
+
+		for (int i = 0; i < vars.pooledAmountV; i++) {
+			
+			GameObject obj = (GameObject)Instantiate(shapeObject);
+
+			//Code for adding the objects to an array
+			obj.SetActive(false);
+			shapesQueue.Add(obj);
+			
+		}
 	
 	}
+
+	void InvokeSpawn(){
+
+		InvokeRepeating ("Spawn", spawnTime, spawnTime);
+
+		}
+
+
+	void Spawn () {
+	
+		for (int i = 0; i < shapesQueue.Count; i++) {
+
+			if(!shapesQueue[i].activeInHierarchy)
+			{
+				//this transform posiiton is of the spawn object.
+				DetermineSpawnNumber(shapesQueue[i]);
+				//shapesQueue[i].transform.position = transform.position;
+
+				shapesQueue[i].SetActive(true);
+				break;
+			}
+
+		}
+
+	}
+
+	//random number generator for spawn loc
+	void DetermineSpawnNumber(GameObject shape){
+		spawnNumber = Mathf.RoundToInt(Random.Range(1,7));
+		SpawnLocation (spawnNumber, shape);
+		
+		
+	}
+
+	//picks spawn location
+	void SpawnLocation (int number, GameObject shape){
+		
+		if (number == 1){
+			shape.transform.position = spawn01.position;
+		}
+		else if (number == 2 ){
+			shape.transform.position = spawn02.position;
+		}
+		else if (number == 3 ){
+			shape.transform.position = spawn03.position;
+		}
+		else if (number == 4 ){
+			shape.transform.position = spawn04.position;
+		}
+		else if (number == 5 ){
+			shape.transform.position = spawn05.position;
+		}
+		else if (number > 5 ) {
+			shape.transform.position = spawn06.position;
+		} 
+		
+	}
+}
