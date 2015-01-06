@@ -17,6 +17,8 @@ public class ShapeSpawn : MonoBehaviour {
 	//tota number of shapes
 	private int pooledAmount;
 	List<GameObject> shapesQueue;
+	
+	private int activeShapes = 0;
 
 	//May need to change this to Update() in order to allow variable changing mid game.
 	void Start () {
@@ -45,11 +47,28 @@ public class ShapeSpawn : MonoBehaviour {
 		if (spawnTime != vars.spawnTimeV) {
 			CancelInvoke("Spawn");
 			spawnTime = vars.spawnTimeV;
-			Invoke ("InvokeSpawn", .6f);
+			//Wait for no more active shapes on screen
+			if (numActiveObj == 0){
+			Invoke ("InvokeSpawn", .4f);
+			}
 		}
 		
 
 	}
+	
+	//keeps count of active objects.
+	private int CountActive()
+     {
+         for (int i = 0; i < shapesQueue.Count; i++)
+         {
+             if (shapesQueue[i].activeSelf == true)
+             {
+                 numActiveObj++;
+                 
+             }
+         }
+         return numActiveObj;
+     }
 
 	void ShapeObjectPool(){
 
