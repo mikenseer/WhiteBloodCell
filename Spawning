@@ -47,24 +47,19 @@ public class ShapeSpawn : MonoBehaviour {
 			spawnTime = vars.spawnTimeV;
 			Invoke ("InvokeSpawn", .6f);
 		}
-		if (pooledAmount != vars.pooledAmountV) {
 		
-			pooledAmount = vars.pooledAmountV;
-			ShapeObjectPool(pooledAmount);
-		
-		}
 
 	}
 
-	void ShapeObjectPool(int pool){
+	void ShapeObjectPool(){
 
 		for (int i = 0; i < vars.pooledAmountV; i++) {
 			
 			GameObject obj = (GameObject)Instantiate(shapeObject);
-
+			shapesQueue.Add(obj);
 			//Code for adding the objects to an array
 			obj.SetActive(false);
-			shapesQueue.Add(obj);
+			
 			
 		}
 	
@@ -83,9 +78,9 @@ public class ShapeSpawn : MonoBehaviour {
 
 			if(!shapesQueue[i].activeInHierarchy)
 			{
-				//this transform posiiton is of the spawn object.
+				
 				DetermineSpawnNumber(shapesQueue[i]);
-				//shapesQueue[i].transform.position = transform.position;
+			
 
 				shapesQueue[i].SetActive(true);
 				break;
