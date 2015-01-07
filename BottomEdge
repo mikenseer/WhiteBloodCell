@@ -3,31 +3,8 @@ using System.Collections;
 
 public class BottomEdge : MonoBehaviour {
 
-	//THIS CODE IS TO GET PROPERTIES OF THE SPAWN AREAS.  MAY BE OBSOLETE NOW
-//	public SpawnRoom spawnRoom01,spawnRoom02,spawnRoom03,spawnRoom04,spawnRoom05,spawnRoom06;
-//
-//	void Start(){
-//		//Finds the bools for each spawnroom.
-//		GameObject s1 = GameObject.FindGameObjectWithTag ("SpawnRoom01");
-//		spawnRoom01 = s1.GetComponent<SpawnRoom> ();
-//
-//		GameObject s2 = GameObject.FindGameObjectWithTag ("SpawnRoom02");
-//		spawnRoom01 = s2.GetComponent<SpawnRoom> ();
-//
-//		GameObject s3 = GameObject.FindGameObjectWithTag ("SpawnRoom03");
-//		spawnRoom01 = s3.GetComponent<SpawnRoom> ();
-//
-//		GameObject s4 = GameObject.FindGameObjectWithTag ("SpawnRoom04");
-//		spawnRoom01 = s4.GetComponent<SpawnRoom> ();
-//
-//		GameObject s5 = GameObject.FindGameObjectWithTag ("SpawnRoom05");
-//		spawnRoom01 = s5.GetComponent<SpawnRoom> ();
-//
-//		GameObject s6 = GameObject.FindGameObjectWithTag ("SpawnRoom06");
-
 	public Variables vars;
-//		spawnRoom01 = s6.GetComponent<SpawnRoom> ();
-//	}
+
 	void Start(){
 		GameObject v1 = GameObject.FindGameObjectWithTag ("Variables");
 		vars = v1.GetComponent<Variables> ();
@@ -37,58 +14,67 @@ public class BottomEdge : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D shape){
 
-
-						if (shape.tag == "Shape") {
-						foreach (Transform child in shape.gameObject.transform) {
-								if (child.gameObject.renderer.enabled == false) {
-										child.gameObject.renderer.enabled = true;
-								} 
-								else if (child.gameObject.tag == "Shape01" || child.gameObject.tag == "Shape02" || child.gameObject.tag == "Shape03" || child.gameObject.tag == "Shape04" || child.gameObject.tag == "Shape05") {
-										if (vars.scoreMultiplier > 0 && vars.scoreMultiplier <= 10) {
-												
-											vars.shapesLetPast++;
-											if (vars.powerCount == 0){
-												
-												vars.scoreMultiplier--;
-												
-											}
-											
-												vars.multiCount = 0;
-										}
-										else if (vars.scoreMultiplier > 10){
-											vars.scoreMultiplier--;
-											
-										}
-										else if (vars.scoreMultiplier <= 0) {
-												//THIS IS GAME OVER
-												vars.playerLives--;
-												vars.shapesLetPast++;
-										}
-										if (vars.powerCount > 0){
-											
-											vars.powerCount--;
-											
-										}
-
-								}
-					
-						}
-		
-						shape.gameObject.SetActive (false);
-			vars.activeShapes--;
-				}
-				
-			
-				
-
-
-
-
-
-
+		CheckIfShape(shape);
+						
 		}
 
+	void CheckIfShape(Collider2D shape){
+		if (shape.tag == "Shape") {
+			LoopThroughChildren(shape.gameObject);
+								
+			shape.gameObject.SetActive (false);
+			vars.activeShapes--;
+				}
+		}
+		
+	void LoopThroughChildren(gameObject shape){
+	
+		foreach (Transform child in shape.transform) {
+								
+							DoThingsWithChildren(child.gameObject);
+						}
+	
+	}
+	void DoThingsWithChildren(gameObject shape){
+	
+		if (shape.renderer.enabled == false) {
+			shape.renderer.enabled = true;
+		} 
+		else if (shape.tag == "Shape01" || shape.tag == "Shape02" || shape.tag == "Shape03" || shape.tag == "Shape04" || shape.tag == "Shape05") {
+			
+			ShapePassedPlater(shape.tag);
 
-
+		}
+	
+	}
+	void ShapePassedPlayer (string shape){
+	
+		if (vars.scoreMultiplier > 0 && vars.scoreMultiplier <= 10) {
+					
+				vars.shapesLetPast++;
+				if (vars.powerCount == 0){
+					
+					vars.scoreMultiplier--;
+					
+				}
+				
+					vars.multiCount = 0;
+			}
+			else if (vars.scoreMultiplier > 10){
+				vars.scoreMultiplier--;
+				
+			}
+			else if (vars.scoreMultiplier <= 0) {
+					//THIS IS GAME OVER
+					vars.playerLives--;
+					vars.shapesLetPast++;
+			}
+			if (vars.powerCount > 0){
+				
+				vars.powerCount--;
+				
+			}
+	
+	}
 
 }
