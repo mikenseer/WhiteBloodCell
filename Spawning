@@ -3,79 +3,101 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ShapeSpawn : MonoBehaviour {
-
+	
 	private Variables vars;
-
+	
 	//spawnTime may be changed into multiple floats for the InvokeRepeating command
 	private float spawnTime;
 	public GameObject shapeObject;
-
+	
 	//The spawn locations
 	public Transform spawn01,spawn02,spawn03,spawn04,spawn05,spawn06;
 	private int spawnNumber;
-
+	
 	//tota number of shapes
 	private int pooledAmount;
-
+	
 	[SerializeField]
 	List<GameObject> shapesQueue= new List<GameObject>();
-
+	
 	private int activeShapes = 0;
-
+	
 	//May need to change this to Update() in order to allow variable changing mid game.
 	void Start () {
-
+		
 		//Variables
 		GameObject v1 = GameObject.FindGameObjectWithTag ("Variables");
 		vars = v1.GetComponent<Variables> ();
 		
-
+		
 		spawnTime = vars.spawnTimeV;
 		pooledAmount = vars.pooledAmountV;
-
+		
 		//The Shapes queue pool	
-
+		
 		//shapesQueue = new List<GameObject>();
 		ShapeObjectPool (vars.pooledAmountV);
-
-
+		
+		
 		//InvokeSpawn ();
 		//Invoke ("InvokeSpawn", .2f);
 	}
-
+	
 	void Update(){
 		//If spawntime changes, re-evaluate before next spawn wave
-
+		
 		if (spawnTime != vars.spawnTimeV) {
-
+			
 			CancelInvoke("Spawn");
 			spawnTime = vars.spawnTimeV;
 			//Wait for no more active shapes on screen
 			StartCoroutine(DelaySpawn());
 		}
-
-	}
-	
-	IEnumerator DelaySpawn() {
-	
-	
-				for (int i = 0; i < shapesQueue.Count; i++)
-				{
-					if (vars.activeShapes == 0)
-					{
-
-						InvokeSpawn();
-						break;
-					}
-					else if (CountActive() > 0)
-					{
-						//Debug.Log(activeShapes + " COUNT");
-						 yield return new WaitForSeconds(.2f);
-					}
-				}
 		
 	}
+	private	bool truTH = false;
+	IEnumerator DelaySpawn() {
 
+	
+		
+		for (int i = 0; i < 6; i++)
+		{
+		THING:;
+			if (vars.activeShapes >= 0)
+			{
+				Debug.Log(vars.activeShapes + " COUNT");
+				yield return new WaitForSeconds(.01f);
+				if (vars.activeShapes > 0)
+				{
+					goto THING;
+				}
+				else{
+				truTH = true;
+				}
+
+
+			}
+			if (truTH){
+				//if (vars.activeShapes == 0)
+				//{
+					Debug.Log(vars.activeShapes + " COUNT WORKS");
+					InvokeSpawn();
+					break;
+				//}
+
+			}
+			else if (vars.activeShapes == 0)
+			{
+			Debug.Log(vars.activeShapes + " COUNT");
+			InvokeSpawn();
+			break;
+			}
+			
+			
+		}
+		
+	}
+	
 	//keeps count of active objects.
 	//private int CountActive()
 	//{
@@ -84,50 +106,50 @@ public class ShapeSpawn : MonoBehaviour {
 	//		if (shapesQueue[i].activeInHierarchy == true)
 	//		{
 	//			activeShapes += 1;
-
-				
+	
+	
 	//		}
-
-			//else{
-			//	activeShapes--;
-			//}
-
+	
+	//else{
+	//	activeShapes--;
+	//}
+	
 	//	}
 	//	return activeShapes;
-
+	
 	//}
-
+	
 	void ShapeObjectPool(int pool){
-
+		
 		for (int i = 0; i < vars.pooledAmountV; i++) {
 			
 			GameObject obj = (GameObject)Instantiate(shapeObject);
-
+			
 			//Code for adding the objects to an array
 			obj.SetActive(false);
 			shapesQueue.Add(obj);
 			
 		}
-	
+		
 	}
-
-	void InvokeSpawn(){
-
-		InvokeRepeating ("Spawn", spawnTime, spawnTime);
-
-		}
-
-
-	void Spawn () {
 	
+	void InvokeSpawn(){
+		
+		InvokeRepeating ("Spawn", spawnTime, spawnTime);
+		
+	}
+	
+	
+	void Spawn () {
+		
 		for (int i = 0; i < shapesQueue.Count; i++) {
-
+			
 			if(!shapesQueue[i].activeInHierarchy)
 			{
 				//this transform posiiton is of the spawn object.
 				DetermineSpawnNumber(shapesQueue[i]);
 				//shapesQueue[i].transform.position = transform.position;
-
+				
 				shapesQueue[i].SetActive(true);
 				vars.activeShapes++;
 				//Put this code in BottomEdge script next to SetActive(false);
@@ -135,11 +157,11 @@ public class ShapeSpawn : MonoBehaviour {
 				
 				break;
 			}
-
+			
 		}
-
+		
 	}
-
+	
 	//random number generator for spawn loc
 	void DetermineSpawnNumber(GameObject shape){
 		spawnNumber = Mathf.RoundToInt(Random.Range(1,7));
@@ -147,7 +169,7 @@ public class ShapeSpawn : MonoBehaviour {
 		
 		
 	}
-
+	
 	//picks spawn location
 	void SpawnLocation (int number, GameObject shape){
 		
