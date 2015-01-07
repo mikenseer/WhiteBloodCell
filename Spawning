@@ -16,8 +16,10 @@ public class ShapeSpawn : MonoBehaviour {
 
 	//tota number of shapes
 	private int pooledAmount;
-	List<GameObject> shapesQueue;
-	
+
+	[SerializeField]
+	List<GameObject> shapesQueue= new List<GameObject>();
+
 	private int activeShapes = 0;
 
 	//May need to change this to Update() in order to allow variable changing mid game.
@@ -32,53 +34,86 @@ public class ShapeSpawn : MonoBehaviour {
 		pooledAmount = vars.pooledAmountV;
 
 		//The Shapes queue pool	
+
 		shapesQueue = new List<GameObject>();
 		ShapeObjectPool (vars.pooledAmountV);
 
 
 		//InvokeSpawn ();
-
+		//Invoke ("InvokeSpawn", .2f);
 	}
 
 	void Update(){
 
+
+
+
 		//If active shapes count > 0 then don't spawn shapes
 
 		if (spawnTime != vars.spawnTimeV) {
+
+			activeShapes = 0;
 			CancelInvoke("Spawn");
 			spawnTime = vars.spawnTimeV;
 			//Wait for no more active shapes on screen
-			if (numActiveObj == 0){
-			Invoke ("InvokeSpawn", .4f);
+			for (int i = 5; i >0; i--){
+
+				Debug.Log(activeShapes + " COUNT");
+
+				if (CountActive() == 0)
+				{
+
+					Invoke("InvokeSpawn", .2f);
+					break;
+				}
+				else if (CountActive() > 0)
+				{
+					//Debug.Log(activeShapes + " COUNT");
+
+				}
+				//else{
+				//	return;
+				//}
+
 			}
+
 		}
-		
+
+
+
 
 	}
-	
+
 	//keeps count of active objects.
 	private int CountActive()
-     {
-         for (int i = 0; i < shapesQueue.Count; i++)
-         {
-             if (shapesQueue[i].activeSelf == true)
-             {
-                 numActiveObj++;
-                 
-             }
-         }
-         return numActiveObj;
-     }
+	{
+		for (int i = 5; i > shapesQueue.Count; i--)
+		{
+			if (shapesQueue[i].activeSelf == true)
+			{
+				activeShapes += 1;
 
-	void ShapeObjectPool(){
+				
+			}
+
+			//else{
+			//	activeShapes--;
+			//}
+
+		}
+		return activeShapes;
+
+	}
+
+	void ShapeObjectPool(int pool){
 
 		for (int i = 0; i < vars.pooledAmountV; i++) {
 			
 			GameObject obj = (GameObject)Instantiate(shapeObject);
-			shapesQueue.Add(obj);
+
 			//Code for adding the objects to an array
 			obj.SetActive(false);
-			
+			shapesQueue.Add(obj);
 			
 		}
 	
@@ -97,9 +132,9 @@ public class ShapeSpawn : MonoBehaviour {
 
 			if(!shapesQueue[i].activeInHierarchy)
 			{
-				
+				//this transform posiiton is of the spawn object.
 				DetermineSpawnNumber(shapesQueue[i]);
-			
+				//shapesQueue[i].transform.position = transform.position;
 
 				shapesQueue[i].SetActive(true);
 				break;
@@ -141,3 +176,4 @@ public class ShapeSpawn : MonoBehaviour {
 		
 	}
 }
+
