@@ -35,7 +35,7 @@ public class ShapeSpawn : MonoBehaviour {
 
 		//The Shapes queue pool	
 
-		shapesQueue = new List<GameObject>();
+		//shapesQueue = new List<GameObject>();
 		ShapeObjectPool (vars.pooledAmountV);
 
 
@@ -44,66 +44,58 @@ public class ShapeSpawn : MonoBehaviour {
 	}
 
 	void Update(){
-
-
-
-
-		//If active shapes count > 0 then don't spawn shapes
+		//If spawntime changes, re-evaluate before next spawn wave
 
 		if (spawnTime != vars.spawnTimeV) {
 
-			activeShapes = 0;
 			CancelInvoke("Spawn");
 			spawnTime = vars.spawnTimeV;
 			//Wait for no more active shapes on screen
-			for (int i = 5; i >0; i--){
-
-				Debug.Log(activeShapes + " COUNT");
-
-				if (CountActive() == 0)
-				{
-
-					Invoke("InvokeSpawn", .2f);
-					break;
-				}
-				else if (CountActive() > 0)
-				{
-					//Debug.Log(activeShapes + " COUNT");
-
-				}
-				//else{
-				//	return;
-				//}
-
-			}
-
+			StartCoroutine(DelaySpawn());
 		}
 
+	}
+	
+	IEnumerator DelaySpawn() {
+	
+	
+				for (int i = 0; i < shapesQueue.Count; i++)
+				{
+					if (vars.activeShapes == 0)
+					{
 
-
-
+						InvokeSpawn();
+						break;
+					}
+					else if (CountActive() > 0)
+					{
+						//Debug.Log(activeShapes + " COUNT");
+						 yield return new WaitForSeconds(.2f);
+					}
+				}
+		
 	}
 
 	//keeps count of active objects.
-	private int CountActive()
-	{
-		for (int i = 5; i > shapesQueue.Count; i--)
-		{
-			if (shapesQueue[i].activeSelf == true)
-			{
-				activeShapes += 1;
+	//private int CountActive()
+	//{
+	//	for (int i = 0; i < shapesQueue.Count; i++)
+	//	{
+	//		if (shapesQueue[i].activeInHierarchy == true)
+	//		{
+	//			activeShapes += 1;
 
 				
-			}
+	//		}
 
 			//else{
 			//	activeShapes--;
 			//}
 
-		}
-		return activeShapes;
+	//	}
+	//	return activeShapes;
 
-	}
+	//}
 
 	void ShapeObjectPool(int pool){
 
@@ -137,6 +129,10 @@ public class ShapeSpawn : MonoBehaviour {
 				//shapesQueue[i].transform.position = transform.position;
 
 				shapesQueue[i].SetActive(true);
+				vars.activeShapes++;
+				//Put this code in BottomEdge script next to SetActive(false);
+				//vars.activeShapes--;
+				
 				break;
 			}
 
@@ -176,4 +172,3 @@ public class ShapeSpawn : MonoBehaviour {
 		
 	}
 }
-
