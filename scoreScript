@@ -1,0 +1,194 @@
+using UnityEngine;
+using System.Collections;
+
+public class scoreScript : MonoBehaviour {
+
+	public Variables vars;
+
+	public GUIText guiText;
+
+
+
+	public int currentScore;
+	public int scoreMultiplier;
+	private int scoreCount;
+	private int multiCount;
+	public int playerLives;
+
+	// Use this for initialization
+	void Start () {
+
+		//vars.currentScore = 0;
+
+
+		//Variables
+		GameObject v1 = GameObject.FindGameObjectWithTag ("Variables");
+		vars = v1.GetComponent<Variables> ();
+
+
+
+		scoreCount = vars.scoreCount;
+		multiCount = vars.multiCount;
+		scoreMultiplier = vars.scoreMultiplier;
+		playerLives = vars.playerLives;
+	}
+
+	//WHEN OBJECT HITS PLAYER
+	void OnTriggerEnter2D (Collider2D obj)  {
+		
+		string name = obj.gameObject.tag;
+
+
+		if (name == "Shape01") {
+
+			UpdateScore(1,10);
+
+
+			
+		}
+		if (name == "Shape02") {
+			
+			UpdateScore(1,10);
+
+			
+			
+		}
+		if (name == "Shape03") {
+			
+			UpdateScore(1,10);
+
+			
+			
+		}
+		if (name == "Shape04") {
+			
+			UpdateScore(1,25);
+
+			
+			
+		}
+		if (name == "Shape05") {
+			
+			UpdateScore(1,50);
+
+			
+			
+		}
+
+		if (name == "Shape00") {
+
+			UpdateScore(-1,0);
+
+			
+		}
+
+		if (name == "Shape06") {
+			
+			UpdateScore(0,0);
+			//UpdateUIScore();
+			
+		}
+	}
+
+
+	void UpdateScore(int scoreType, int scoreValue) {
+
+		//For hitting shape
+		if (scoreType ==1) {
+
+			vars.multiCount++;
+			vars.scoreCount++;
+			CalculateMultiplier(vars.multiCount);
+
+			vars.currentScore+= scoreValue * vars.scoreMultiplier;
+
+			if (vars.powerCount > 0){
+			vars.powerCount--;
+			}
+		}
+
+		//Hit beat, increase multiplier
+		if (scoreType == -1) {
+			vars.powerCount += 3;
+
+
+			//if(vars.previousScore < vars.currentScore){
+			//	vars.previousScore = vars.currentScore;
+			//}
+			//vars.currentScore = 0;
+			//vars.scoreCount = -2;
+			//CalculateMultiplier(vars.scoreCount);
+			vars.scoreMultiplier += 3;
+
+		}
+
+		//Add a life
+		if (scoreType == 0) {
+		
+			vars.playerLives++;
+		
+		}
+	
+	}
+
+
+
+	void CalculateMultiplier(int count){
+
+		scoreMultiplier = Mathf.RoundToInt((count + 10)/10);
+
+
+		if (vars.scoreMultiplier > 10) {
+			vars.scoreMultiplier--;
+			//vars.isContinuation = true;
+			} 
+		else if (scoreMultiplier > vars.scoreMultiplier)
+			{
+				vars.scoreMultiplier = Mathf.Clamp (scoreMultiplier,0,10);
+			}
+
+
+						//if (count < 0) {
+						//		vars.scoreMultiplier = -1;
+						//} else 
+//			if (count < 5) {
+//								if (vars.scoreMultiplier < 1) {
+//										vars.scoreMultiplier = 1;
+//								}
+//
+//						} else if (count < 20) {
+//								if (vars.scoreMultiplier < 2) {
+//										vars.scoreMultiplier = 2;
+//								}
+//						} else if (count < 30) {
+//								if (vars.scoreMultiplier < 3) {
+//										vars.scoreMultiplier = 3;
+//								}
+//						} 
+//			else if (count < 40) {
+//				if (vars.scoreMultiplier < 4) {
+//					vars.scoreMultiplier = 4;
+//				}
+//			} 
+//			else if (count < 50) {
+//				if (vars.scoreMultiplier < 5) {
+//					vars.scoreMultiplier = 5;
+//				}
+//			} else if (count < 100) {
+//								if (vars.scoreMultiplier < 5) {
+//										vars.scoreMultiplier = 5;
+//								}
+//						} else if (count > 100) {
+//			
+//								vars.scoreMultiplier = 10;
+//			
+//						} 
+				
+
+//		if (count%1000 == 0) {
+//			
+//			vars.playerLives++;
+//			
+//		}
+	}
+}
