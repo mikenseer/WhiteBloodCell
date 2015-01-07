@@ -1,0 +1,238 @@
+using UnityEngine;
+using System.Collections;
+
+public class Variables : MonoBehaviour {
+
+	public GUIText guiText;
+
+	public int pooledAmountV = 10;
+	public float fallSpeedV = -4f;
+	public float spawnTimeV = .3f;
+	//public float removeTimeV = 3f;
+
+	public float maxSpeed = -10f;
+	public float minSpeed = -3f;
+	public float boostSpeed = 2f;
+
+	public int scoreCount;
+	public int multiCount;
+	public int scoreMultiplier = 1;
+	public int playerLives = 3;
+
+	public int previousScore;
+	public int currentScore;
+	public int powerCount = 0;
+	public int shapesLetPast = 0;
+
+	public int shape01Chance = 30;
+	public int shape02Chance = 30;
+	public int shape03Chance = 30;
+	public int shape04Chance = 7;
+	public int shape05Chance = 2;
+	public int shape00Chance = 1;
+	public int shape06Chance = 0;
+	public int shape07Chance = 0;
+
+	public bool isContinuation = false;
+
+	public int activeShapes;
+
+	void Update()
+	{
+		ShapeSpeed (scoreMultiplier);
+		UpdateUIScore ();
+
+	}
+
+	void UpdateUIScore(){
+		
+		guiText.text = "Score: " + currentScore +
+			//" Best: " + previousScore + 
+			" \n " + scoreMultiplier + "x \n Lives:" + playerLives + "\n ShapesMissed: " + shapesLetPast + "\n Count: " + scoreCount;
+		
+	}
+
+	void ShapeSpeed (int multiplier){
+		//float aFloat;
+		if (multiplier <= 10){
+			//aFloat = (maxSpeed * (.1f * multiplier));
+			fallSpeedV = Mathf.Clamp((maxSpeed * (.2f * multiplier)),-10.5f, -3f);
+			spawnTimeV = Mathf.Clamp((2f/multiplier),.25f,1f);
+			DetermineShapeSpawning (multiplier);
+		}
+		
+		else{
+			fallSpeedV = maxSpeed - boostSpeed;
+			//fallSpeedV = -((boostSpeed * multiplier) + multiplier);
+			DetermineShapeSpawning (multiplier);;
+		}
+
+//				if (multiplier == 1) {
+//
+//						//Beginning of game
+//						if (!isContinuation) {
+//								fallSpeedV = -2.75f;
+//								DetermineShapeSpawning (multiplier, isContinuation);
+//						}
+//
+//						//Continuation
+//						if (isContinuation) {
+//								fallSpeedV = -5f;
+//								DetermineShapeSpawning (multiplier, isContinuation);
+//						}
+//			
+//				}
+//				else if (multiplier == 2) {
+//
+//						if (!isContinuation) {
+//								fallSpeedV = -3.5f;
+//								DetermineShapeSpawning (multiplier, false);
+//						}
+//						if (isContinuation) {
+//								fallSpeedV = -6.5f;
+//								DetermineShapeSpawning (multiplier, isContinuation);
+//						}
+//			
+//				}
+//		else if (multiplier >= 3 && multiplier < 5) {
+//
+//						if (!isContinuation) {
+//								fallSpeedV = -5f;
+//								DetermineShapeSpawning (multiplier, isContinuation);
+//						}
+//						if (isContinuation) {
+//								fallSpeedV = -8f;
+//								DetermineShapeSpawning (multiplier, isContinuation);
+//						}
+//				}
+//		else if (multiplier >= 5 && multiplier < 10) {
+//						if (!isContinuation) {
+//								fallSpeedV = -7f;
+//								DetermineShapeSpawning (multiplier, isContinuation);
+//						}
+//						if (isContinuation) {
+//								fallSpeedV = -9f;
+//								DetermineShapeSpawning (multiplier, isContinuation);
+//						}
+//				}
+//		else if (multiplier == 10) {
+//
+//						if (!isContinuation) {
+//								fallSpeedV = -10f;
+//								DetermineShapeSpawning (multiplier, isContinuation);
+//						}
+//						if (isContinuation) {
+//								fallSpeedV = -10.5f;
+//								DetermineShapeSpawning (multiplier, isContinuation);
+//						}
+//
+//				}
+//				
+//		else if (multiplier > 10) {
+//				
+//						fallSpeedV = -12f;
+//
+//						DetermineShapeSpawning (multiplier, isContinuation);
+//		
+//				}
+
+	
+		}
+
+	void DetermineShapeSpawning(int multiplier){
+
+		if (multiplier == 1) {
+		
+
+				shape01Chance = 50;
+				shape02Chance = 50;
+				shape03Chance = 0;
+				shape04Chance = 0;
+				shape05Chance = 0;
+				shape00Chance = 0;
+				shape06Chance = 0;
+
+				//spawnTimeV = .8f;
+
+		
+		}
+
+		else if (multiplier == 2) {
+
+				shape01Chance = 50;
+				shape02Chance = 49;
+				shape03Chance = 0;
+				shape04Chance = 0;
+				shape05Chance = 0;
+				shape00Chance = 0;
+				shape06Chance = 1;
+
+				//spawnTimeV = .6f;
+
+			
+		}
+		
+		else if (multiplier >= 3 && multiplier < 5) {
+			
+
+				shape01Chance = 31;
+				shape02Chance = 31;
+				shape03Chance = 31;
+				shape04Chance = 4;
+				shape05Chance = 0;
+				shape00Chance = 2;
+				shape06Chance = 1;
+				//shape07Chance = 15;
+
+				//spawnTimeV = .5f;
+
+			
+		}
+		
+		else if (multiplier >= 5 && multiplier < 10) {
+			
+
+				shape01Chance = 25;
+				shape02Chance = 25;
+				shape03Chance = 25;
+				shape04Chance = 16;
+				shape05Chance = 5;
+				shape00Chance = 3;
+				shape06Chance = 1;
+				//shape07Chance = 0;
+
+				//spawnTimeV = .4f;
+
+			
+		}
+		
+		else if (multiplier == 10) {
+			
+
+				shape01Chance = 20;
+				shape02Chance = 20;
+				shape03Chance = 20;
+				shape04Chance = 20;
+				shape05Chance = 14;
+				shape00Chance = 5;
+				shape06Chance = 1;
+				//shape07Chance = 0;
+				//spawnTimeV = .3f;
+
+			
+		}
+		else if (multiplier > 10) {
+
+				shape01Chance = 0;
+				shape02Chance = 0;
+				shape03Chance = 0;
+				shape04Chance = 35;
+				shape05Chance = 45;
+				shape00Chance = 20;
+				shape06Chance = 0;
+				//shape07Chance = 5;
+
+				//spawnTimeV = .2f;
+		}
+	}
+}
