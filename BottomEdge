@@ -27,7 +27,7 @@ public class BottomEdge : MonoBehaviour {
 				}
 		}
 	//Loops the shapeObject children through stuff
-	void LoopThroughChildren(gameObject shape){
+	void LoopThroughChildren(GameObject shape){
 	
 		foreach (Transform child in shape.transform) {
 			DoThingsWithChildren(child.gameObject);
@@ -35,7 +35,7 @@ public class BottomEdge : MonoBehaviour {
 	
 	}
 	//Checks if the shapeObject children (the shapes) are enabled
-	void DoThingsWithChildren(gameObject shape){
+	void DoThingsWithChildren(GameObject shape){
 	
 		if (shape.renderer.enabled == false) {
 			shape.renderer.enabled = true;
@@ -47,29 +47,35 @@ public class BottomEdge : MonoBehaviour {
 	}
 	//Code to change multipliers and count shapes passing the player
 	void ShapePassedPlayer (string shape){
-		if (shape == "Shape01" || shape == "Shape02" || shape == "Shape03" || shape == "Shape04" || shape == "Shape05") {
-			if (vars.scoreMultiplier > 0 && vars.scoreMultiplier <= 10) {
+		if ( shape == "Shape02" || shape == "Shape03" || shape == "Shape04" || shape == "Shape05") {
+			
+			//NewCode
+			vars.shapesLetPast++;
+			vars.playerLives--;
+			
+			//Old code 
+			// if (vars.scoreMultiplier > 0 && vars.scoreMultiplier <= 10) {
 						
-					vars.shapesLetPast++;
+					// vars.shapesLetPast++;
 					
-					if (vars.powerCount == 0){						
-						vars.scoreMultiplier--;				
-					}
+					// if (vars.powerCount == 0){						
+						// vars.scoreMultiplier--;				
+					// }
 					
-						vars.multiCount = 0;
-				}
-				else if (vars.scoreMultiplier > 10){
-					vars.scoreMultiplier--;					
-				}
-				else if (vars.scoreMultiplier <= 0) {
+						// vars.multiCount = 0;
+				// }
+				// else if (vars.scoreMultiplier > 10){
+					// vars.scoreMultiplier--;					
+				// }
+				// else if (vars.scoreMultiplier <= 0) {
 						//THIS IS GAME OVER
-						vars.playerLives--;
-						vars.shapesLetPast++;
-				}
+						// vars.playerLives--;
+						// vars.shapesLetPast++;
+				// }
 				
-				if (vars.powerCount > 0){					
-					vars.powerCount--;				
-				}
+				// if (vars.powerCount > 0){					
+					// vars.powerCount--;				
+				// }
 		}
 	}
 
