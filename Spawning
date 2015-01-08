@@ -49,7 +49,7 @@ public class ShapeSpawn : MonoBehaviour {
 		if (spawnTime != vars.spawnTimeV) {
 			
 			CancelInvoke("Spawn");
-			spawnTime = vars.spawnTimeV;
+			
 			//Wait for no more active shapes on screen
 			StartCoroutine(DelaySpawn());
 		}
@@ -80,8 +80,12 @@ public class ShapeSpawn : MonoBehaviour {
 			if (truTH){
 				//if (vars.activeShapes == 0)
 				//{
+					truTH = false;
 					Debug.Log(vars.activeShapes + " COUNT WORKS");
+					//set new spawn time
+					spawnTime = vars.spawnTimeV;
 					InvokeSpawn();
+					
 					break;
 				//}
 
