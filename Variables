@@ -53,20 +53,35 @@ public class Variables : MonoBehaviour {
 	}
 
 	void ShapeSpeed (int multiplier){
-		//float aFloat;
+		
 		if (multiplier <= 10){
-			//aFloat = (maxSpeed * (.1f * multiplier));
-			fallSpeedV = Mathf.Clamp((maxSpeed * (.2f * multiplier)),-10.5f, -3f);
+			fallSpeedV = Mathf.Clamp((maxSpeed * (.2f * multiplier)),-10.5f, -2.5f);
 			spawnTimeV = Mathf.Clamp((2f/multiplier),.25f,1f);
-			DetermineShapeSpawning (multiplier);
+			DetermineShapeSpawningNew (multiplier);
 		}
 		
 		else{
-			fallSpeedV = maxSpeed - boostSpeed;
+			fallSpeedV = maxSpeed - (.2 * multiplier);
 			//fallSpeedV = -((boostSpeed * multiplier) + multiplier);
-			DetermineShapeSpawning (multiplier);;
+			DetermineShapeSpawningNew (multiplier);
 		}
+		
+		
+		//Old Code
+		//if (multiplier <= 10){
+		//	//aFloat = (maxSpeed * (.1f * multiplier));
+		//	fallSpeedV = Mathf.Clamp((maxSpeed * (.2f * multiplier)),-10.5f, -3f);
+		//	spawnTimeV = Mathf.Clamp((2f/multiplier),.25f,1f);
+		//	DetermineShapeSpawning (multiplier);
+		//}
+		
+		//else{
+		//	fallSpeedV = maxSpeed - boostSpeed;
+		//	//fallSpeedV = -((boostSpeed * multiplier) + multiplier);
+		//	DetermineShapeSpawning (multiplier);;
+		//}
 
+	//OBSOLETE CODE
 //				if (multiplier == 1) {
 //
 //						//Beginning of game
@@ -138,6 +153,19 @@ public class Variables : MonoBehaviour {
 
 	
 		}
+		
+	void DetermineShapeSpawningNew(int multiplier){
+
+		object01Chance = Mathf.Clamp(   ((-1.5 * (multiplier - 1))  + 20)   , 5 ,  20);
+
+		object00Chance = Mathf.Clamp(   ((1.5 * (multiplier - 1))  + 5)       , 5 , 20);
+
+		object02Chance = Mathf.Clamp(  ((-3.75*(multiplier - 1)) + 37.5),  0  ,  37.5);
+		object03Chance = Mathf.Clamp(  ((-3.75*(multiplier - 1)) + 37.5),  0  ,  37.5);
+		object04Chance = Mathf.Clamp(  (3.75*(multiplier - 1))  ,  0  ,37.5);
+		object05Chance = Mathf.Clamp(  (3.75*(multiplier - 1))  ,  0  ,37.5);
+		
+	}	
 
 	void DetermineShapeSpawning(int multiplier){
 
