@@ -48,7 +48,7 @@ public class Variables : MonoBehaviour {
 		
 		guiText.text = "Score: " + currentScore +
 			//" Best: " + previousScore + 
-			" \n " + scoreMultiplier + "x \n Lives:" + playerLives + "\n ShapesMissed: " + shapesLetPast + "\n Count: " + scoreCount;
+		" \n Speed:" + scoreMultiplier + "X \n Lives:" + playerLives + "\n Count: " + scoreCount;
 		
 	}
 
