@@ -20,7 +20,7 @@ public class ShapeSpawn : MonoBehaviour {
 	[SerializeField]
 	List<GameObject> shapesQueue= new List<GameObject>();
 	
-	private int activeShapes = 0;
+	private int activeShapes;
 	
 	//May need to change this to Update() in order to allow variable changing mid game.
 	void Start () {
@@ -53,6 +53,7 @@ public class ShapeSpawn : MonoBehaviour {
 			//Wait for no more active shapes on screen
 			StartCoroutine(DelaySpawn());
 		}
+		activeShapes = vars.activeShapes;
 		
 	}
 	private	bool truTH = false;
@@ -63,11 +64,11 @@ public class ShapeSpawn : MonoBehaviour {
 		for (int i = 0; i < 6; i++)
 		{
 		THING:;
-			if (vars.activeShapes >= 0)
+			if (activeShapes >= 0)
 			{
-				Debug.Log(vars.activeShapes + " COUNT");
-				yield return new WaitForSeconds(.01f);
-				if (vars.activeShapes > 0)
+				Debug.Log(activeShapes + " COUNT");
+				yield return new WaitForSeconds(.1f);
+				if (activeShapes > 0)
 				{
 					goto THING;
 				}
@@ -78,50 +79,27 @@ public class ShapeSpawn : MonoBehaviour {
 
 			}
 			if (truTH){
-				//if (vars.activeShapes == 0)
-				//{
 					truTH = false;
-					Debug.Log(vars.activeShapes + " COUNT WORKS");
+					Debug.Log(activeShapes + " COUNT WORKS");
 					//set new spawn time
-					spawnTime = vars.spawnTimeV;
+					spawnTime = spawnTimeV;
 					InvokeSpawn();
 					
 					break;
-				//}
 
 			}
-			else if (vars.activeShapes == 0)
-			{
-			Debug.Log(vars.activeShapes + " COUNT");
-			InvokeSpawn();
-			break;
-			}
+		//	else if (activeShapes == 0)
+		//	{
+		//	Debug.Log(activeShapes + " COUNT");
+		//	InvokeSpawn();
+		//	break;
+		//	}
 			
 			
 		}
 		
 	}
 	
-	//keeps count of active objects.
-	//private int CountActive()
-	//{
-	//	for (int i = 0; i < shapesQueue.Count; i++)
-	//	{
-	//		if (shapesQueue[i].activeInHierarchy == true)
-	//		{
-	//			activeShapes += 1;
-	
-	
-	//		}
-	
-	//else{
-	//	activeShapes--;
-	//}
-	
-	//	}
-	//	return activeShapes;
-	
-	//}
 	
 	void ShapeObjectPool(int pool){
 		
