@@ -155,16 +155,18 @@ public class Variables : MonoBehaviour {
 		}
 		
 	void DetermineShapeSpawningNew(int multiplier){
-
-		object01Chance = Mathf.Clamp(   ((-1.5 * (multiplier - 1))  + 20)   , 5 ,  20);
-
-		object00Chance = Mathf.Clamp(   ((1.5 * (multiplier - 1))  + 5)       , 5 , 20);
-
-		object02Chance = Mathf.Clamp(  ((-3.75*(multiplier - 1)) + 37.5),  0  ,  37.5);
-		object03Chance = Mathf.Clamp(  ((-3.75*(multiplier - 1)) + 37.5),  0  ,  37.5);
-		object04Chance = Mathf.Clamp(  (3.75*(multiplier - 1))  ,  0  ,37.5);
-		object05Chance = Mathf.Clamp(  (3.75*(multiplier - 1))  ,  0  ,37.5);
-		
+		//Up triangle
+		shape01Chance = Mathf.Clamp(   ((-1.5 * (multiplier - 1))  + 20)   , 5 ,  20);
+		//Down triangle
+		shape00Chance = Mathf.Clamp(   ((1.5 * (multiplier - 1))  + 5)       , 5 , 20);
+		//Other shapes
+		shape02Chance = Mathf.Clamp(  ((-3.7*(multiplier - 1)) + 37),  0  ,  37);
+		shape03Chance = Mathf.Clamp(  ((-3.7*(multiplier - 1)) + 37),  0  ,  37);
+		shape04Chance = Mathf.Clamp(  (3.7*(multiplier - 1))  ,  0  ,37);
+		shape05Chance = Mathf.Clamp(  (3.7*(multiplier - 1))  ,  0  ,37);
+		//ExtraLife and Empty shape
+		shape06Chance = Mathf.Clamp(  (.1*(multiplier - 1))  ,  0  ,1);
+		shape07Chance = Mathf.Clamp(  (-.1*(multiplier - 1) + 1)  ,  0  ,1);
 	}	
 
 	void DetermineShapeSpawning(int multiplier){
