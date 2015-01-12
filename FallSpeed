@@ -1,0 +1,24 @@
+using UnityEngine;
+using System.Collections;
+
+public class MYCLASSNAME : MonoBehaviour {
+
+ private float currentSpeed;
+ private float newSpeed;
+ public float smoothTime = .3f;
+public Transform target; //Set this as the bottom area
+ 
+ void  Update (){
+   
+   if (currentSpeed != vars.fallSpeedV)
+   {
+		
+		newSpeed = Mathf.SmoothDamp(currentSpeed, vars.fallSpeedV, 0, smoothTime);
+		currentSpeed = new float(newSpeed);
+	{
+	
+	
+	
+        
+ }
+}
