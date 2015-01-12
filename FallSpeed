@@ -6,19 +6,30 @@ public class MYCLASSNAME : MonoBehaviour {
  private float currentSpeed;
  private float newSpeed;
  public float smoothTime = .3f;
-public Transform target; //Set this as the bottom area
+ 
+ void OnActive(){
+	
+ }
  
  void  Update (){
    
    if (currentSpeed != vars.fallSpeedV)
-   {
-		
+   {		
 		newSpeed = Mathf.SmoothDamp(currentSpeed, vars.fallSpeedV, 0, smoothTime);
 		currentSpeed = new float(newSpeed);
 	{
 	
+	/////OR/////
 	
+	if (currentSpeed < vars.fallSpeedV){
+	newSpeed = Mathf.SmoothStep(currentSpeed, vars.fallSpeedV, smoothTime);
+	currentSpeed = new float(newSpeed);
+	}
 	
-        
+	else if (currentSpeed > vars.fallSpeedV){
+	newSpeed = Mathf.SmoothStep(vars.fallSpeedV, currentSpeed, smoothTime);
+	currentSpeed = new float(newSpeed);
+	}
+ 
  }
 }
