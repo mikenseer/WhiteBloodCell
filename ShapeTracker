@@ -3,73 +3,68 @@ using System.Collections;
 
 public class ShapeTracker : MonoBehaviour {
 
+	//current count for each shape square, circle, ttriangle, diamond, star
 	private int countS01;
 	private int countS02;
 	private int countS03;
 	private int countS04;
 	private int countS05;
+	
+	//count required for button to appear
+	private int countReq01;
+	private int countReq02;
+	private int countReq03;
+	private int countReq04;
+	private int countReq05;
 
 	public Timer timer;
 	public Button button;
 
 	// Use this for initialization
 	void Start () {
-		button.gameObject.SetActive (false);
+		//button.gameObject.SetActive (false);
+		
+		//Set starting required counts.
+		countReq01 = 10;
+		countReq02 = 10;
+		countReq03 = 15;
+		countReq04 = 20;
+		countReq05 = 25;
 	}
 	
-	// Update is called once per frame
-	void Update () {
 
 
-
-	}
-
-
+	//When shape hits player.
 	void OnTriggerEnter2D (Collider2D obj)  {
 		
 		string name = obj.gameObject.tag;
 		
 		//square
-		if (name == "Shape01") {
-			
+		if (name == "Shape01") {			
 			countS01++;
-
 		}
 		//circle
-		if (name == "Shape02") {
-			
+		if (name == "Shape02") {			
 			countS02++;
-
 		}
 		//triangle
-		if (name == "Shape03") {
-			
+		if (name == "Shape03") {			
 			countS03++;
-
 		}
 		//diamond
-		if (name == "Shape04") {
-			
+		if (name == "Shape04") {			
 			countS04++;
-
 		}
 		//star
-		if (name == "Shape05") {
-			
+		if (name == "Shape05") {			
 			countS05++;
-			
-			
-			
 		}
 		//bonus shape adds a little time
-		if (name == "Shape00") {
-			
-			timer.time += 1.5f;
-			
-			
+		if (name == "Shape00") {			
+			timer.time += 1.5f;			
 		}
 
-
+		//Check count and activate button
 		ActiveButton (countS01, countS02, countS03, countS04, countS05);
 	
 	}
@@ -77,34 +72,69 @@ public class ShapeTracker : MonoBehaviour {
 	//Activate the button when a shape has been collected a few times
 	void ActiveButton(int count1, int count2, int count3, int count4, int count5){
 	
-		if (count1 >= 10) {
+	//Squares
+		if (count1 >= countReq01) {
 			countS01 = 0;
 			button.timeToAdd = 10;
 			button.gameObject.SetActive(true);
 			
+			//Keep the required count at a ceiling
+			if (countReq01 < 100)
+			{
+			countReq01 += 5;
+			}
+			
 		}
-		if (count2 >= 10) {
+	//Circles
+		if (count2 >= countReq02) {
 			countS02 = 0;
 			button.timeToAdd = 10;
 			button.gameObject.SetActive(true);
 			
+			//Keep the required count at a ceiling
+			if (countReq02 < 100)
+			{
+			countReq02 += 5;
+			}
+			
 		}
-		if (count3 >= 10) {
+	//Triangles
+		if (count3 >= countReq03) {
 			countS03 = 0;
 			button.timeToAdd = 10;
 			button.gameObject.SetActive(true);
 			
+			//Keep the required count at a ceiling
+			if (countReq03 < 100)
+			{
+			countReq03 += 5;
+			}
+			
 		}
-		if (count4 >= 10) {
+	//Diamonds
+		if (count4 >= countReq04) {
 			countS04 = 0;
 			button.timeToAdd = 10;
 			button.gameObject.SetActive(true);
 			
+			//Keep the required count at a ceiling
+			if (countReq04 < 100)
+			{
+			countReq04 += 5;
+			}
+			
 		}
-		if (count5 >= 10) {
+	//Stars
+		if (count5 >= countReq05) {
 			countS05 = 0;
 			button.timeToAdd = 10;
 			button.gameObject.SetActive(true);
+			
+			//Keep the required count at a ceiling
+			if (countReq05 < 100)
+			{
+			countReq05 += 5;
+			}
 			
 		}
 	
