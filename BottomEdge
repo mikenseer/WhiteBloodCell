@@ -4,6 +4,7 @@ using System.Collections;
 public class BottomEdge : MonoBehaviour {
 	
 	public Variables vars;
+	public Timer timer;
 	
 	void Start(){
 		GameObject v1 = GameObject.FindGameObjectWithTag ("Variables");
@@ -48,26 +49,36 @@ public class BottomEdge : MonoBehaviour {
 	//Code to change multipliers and count shapes passing the player
 	void ShapePassedPlayer (string shape){
 		if (shape == "Shape01" || shape == "Shape02" || shape == "Shape03" || shape == "Shape04" || shape == "Shape05") {
+			
+			//Wile multiplier is in normal zone
 			if (vars.scoreMultiplier > 0 && vars.scoreMultiplier <= 10) {
 				
 				vars.shapesLetPast++;
-				vars.playerLives--;
+				//vars.playerLives--;
 				
+				//While not under bonus, lose multiplier and time
 				if (vars.powerCount == 0){						
-					vars.scoreMultiplier--;				
+					vars.scoreMultiplier--;	
+					timer.time -= 1.5f;
 				}
 				
+				//Resets count for earning multiplier
 				vars.multiCount = 0;
 			}
+			
+			//While under bonus, only loss is multiplier
 			else if (vars.scoreMultiplier > 10){
 				vars.scoreMultiplier--;					
 			}
+			
+			//Don't coun't shapes let past if user gets this low.
 			else if (vars.scoreMultiplier <= 0) {
-				//THIS IS GAME OVER
-				vars.playerLives--;
+				
+				//vars.playerLives--;
 				vars.shapesLetPast++;
 			}
 			
+			//Reduce power count always until back at 0.
 			if (vars.powerCount > 0){					
 				vars.powerCount--;				
 			}
