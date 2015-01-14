@@ -17,6 +17,9 @@ public class Variables : MonoBehaviour {
 	public int scoreCount;
 	public int multiCount;
 	public int scoreMultiplier = 1;
+	public int topMultiplier;
+	public int highestMultiplier;
+
 	public int playerLives = 3;
 
 	public int previousScore;
@@ -37,137 +40,60 @@ public class Variables : MonoBehaviour {
 
 	public int activeShapes;
 
+	public string gameState = "FLOW";
+
+	public string[] achievementStrings;
+	public string achievementBools;
+
+	public bool gameOver = false;
+
+	void Start(){
+
+		LoadScore ();
+	
+	}
+
 	void Update()
 	{
 		ShapeSpeed (scoreMultiplier);
 		UpdateUIScore ();
 
+		if (gameOver == true) {
+		
+			GameOver();
+		
+		}
+		if (topMultiplier < scoreMultiplier) {
+			topMultiplier = scoreMultiplier;		
+		}
+
 	}
 
 	void UpdateUIScore(){
 		
-		guiText.text = "Score: " + currentScore +
-			//" Best: " + previousScore + 
-		" \n Speed:" + scoreMultiplier + "X \n Lives:" + playerLives + "\n Count: " + scoreCount;
+		guiText.text = gameState+"\n Score: " + currentScore +
+			" Best: " + previousScore + 
+				" \n " + scoreMultiplier + "x Game: " + topMultiplier + "x Best: " + highestMultiplier + "x \n Count: " + scoreCount;
 		
 	}
 
 	void ShapeSpeed (int multiplier){
-		
+		//float aFloat;
 		if (multiplier <= 10){
-			fallSpeedV = Mathf.Clamp((maxSpeed * (.2f * multiplier)),-10.5f, -2.5f);
-			spawnTimeV = Mathf.Clamp((2f/multiplier),.25f,1f);
-			DetermineShapeSpawningNew (multiplier);
+			//aFloat = (maxSpeed * (.1f * multiplier));
+			fallSpeedV = Mathf.Clamp((maxSpeed * (.2f * multiplier)),-10.5f, -3f);
+			spawnTimeV = Mathf.Clamp((2f/multiplier),.3f,1f);
+			DetermineShapeSpawning (multiplier);
 		}
 		
 		else{
-			fallSpeedV = maxSpeed - (.2 * multiplier);
+			fallSpeedV = maxSpeed - boostSpeed;
 			//fallSpeedV = -((boostSpeed * multiplier) + multiplier);
-			DetermineShapeSpawningNew (multiplier);
+			DetermineShapeSpawning (multiplier);;
 		}
-		
-		
-		//Old Code
-		//if (multiplier <= 10){
-		//	//aFloat = (maxSpeed * (.1f * multiplier));
-		//	fallSpeedV = Mathf.Clamp((maxSpeed * (.2f * multiplier)),-10.5f, -3f);
-		//	spawnTimeV = Mathf.Clamp((2f/multiplier),.25f,1f);
-		//	DetermineShapeSpawning (multiplier);
-		//}
-		
-		//else{
-		//	fallSpeedV = maxSpeed - boostSpeed;
-		//	//fallSpeedV = -((boostSpeed * multiplier) + multiplier);
-		//	DetermineShapeSpawning (multiplier);;
-		//}
-
-	//OBSOLETE CODE
-//				if (multiplier == 1) {
-//
-//						//Beginning of game
-//						if (!isContinuation) {
-//								fallSpeedV = -2.75f;
-//								DetermineShapeSpawning (multiplier, isContinuation);
-//						}
-//
-//						//Continuation
-//						if (isContinuation) {
-//								fallSpeedV = -5f;
-//								DetermineShapeSpawning (multiplier, isContinuation);
-//						}
-//			
-//				}
-//				else if (multiplier == 2) {
-//
-//						if (!isContinuation) {
-//								fallSpeedV = -3.5f;
-//								DetermineShapeSpawning (multiplier, false);
-//						}
-//						if (isContinuation) {
-//								fallSpeedV = -6.5f;
-//								DetermineShapeSpawning (multiplier, isContinuation);
-//						}
-//			
-//				}
-//		else if (multiplier >= 3 && multiplier < 5) {
-//
-//						if (!isContinuation) {
-//								fallSpeedV = -5f;
-//								DetermineShapeSpawning (multiplier, isContinuation);
-//						}
-//						if (isContinuation) {
-//								fallSpeedV = -8f;
-//								DetermineShapeSpawning (multiplier, isContinuation);
-//						}
-//				}
-//		else if (multiplier >= 5 && multiplier < 10) {
-//						if (!isContinuation) {
-//								fallSpeedV = -7f;
-//								DetermineShapeSpawning (multiplier, isContinuation);
-//						}
-//						if (isContinuation) {
-//								fallSpeedV = -9f;
-//								DetermineShapeSpawning (multiplier, isContinuation);
-//						}
-//				}
-//		else if (multiplier == 10) {
-//
-//						if (!isContinuation) {
-//								fallSpeedV = -10f;
-//								DetermineShapeSpawning (multiplier, isContinuation);
-//						}
-//						if (isContinuation) {
-//								fallSpeedV = -10.5f;
-//								DetermineShapeSpawning (multiplier, isContinuation);
-//						}
-//
-//				}
-//				
-//		else if (multiplier > 10) {
-//				
-//						fallSpeedV = -12f;
-//
-//						DetermineShapeSpawning (multiplier, isContinuation);
-//		
-//				}
 
 	
 		}
-		
-	void DetermineShapeSpawningNew(int multiplier){
-		//Up triangle
-		shape01Chance = Mathf.Clamp(   ((-1.5 * (multiplier - 1))  + 20)   , 5 ,  20);
-		//Down triangle
-		shape00Chance = Mathf.Clamp(   ((1.5 * (multiplier - 1))  + 5)       , 5 , 20);
-		//Other shapes
-		shape02Chance = Mathf.Clamp(  ((-3.7*(multiplier - 1)) + 37),  0  ,  37);
-		shape03Chance = Mathf.Clamp(  ((-3.7*(multiplier - 1)) + 37),  0  ,  37);
-		shape04Chance = Mathf.Clamp(  (3.7*(multiplier - 1))  ,  0  ,37);
-		shape05Chance = Mathf.Clamp(  (3.7*(multiplier - 1))  ,  0  ,37);
-		//ExtraLife and Empty shape
-		shape06Chance = Mathf.Clamp(  (.1*(multiplier - 1))  ,  0  ,1);
-		shape07Chance = Mathf.Clamp(  (-.1*(multiplier - 1) + 1)  ,  0  ,1);
-	}	
 
 	void DetermineShapeSpawning(int multiplier){
 
@@ -190,12 +116,12 @@ public class Variables : MonoBehaviour {
 		else if (multiplier == 2) {
 
 				shape01Chance = 50;
-				shape02Chance = 49;
+				shape02Chance = 50;
 				shape03Chance = 0;
 				shape04Chance = 0;
 				shape05Chance = 0;
 				shape00Chance = 0;
-				shape06Chance = 1;
+				shape06Chance = 0;
 
 				//spawnTimeV = .6f;
 
@@ -208,10 +134,10 @@ public class Variables : MonoBehaviour {
 				shape01Chance = 31;
 				shape02Chance = 31;
 				shape03Chance = 31;
-				shape04Chance = 4;
+				shape04Chance = 5;
 				shape05Chance = 0;
 				shape00Chance = 2;
-				shape06Chance = 1;
+				shape06Chance = 0;
 				//shape07Chance = 15;
 
 				//spawnTimeV = .5f;
@@ -225,10 +151,10 @@ public class Variables : MonoBehaviour {
 				shape01Chance = 25;
 				shape02Chance = 25;
 				shape03Chance = 25;
-				shape04Chance = 16;
+				shape04Chance = 17;
 				shape05Chance = 5;
 				shape00Chance = 3;
-				shape06Chance = 1;
+				shape06Chance = 0;
 				//shape07Chance = 0;
 
 				//spawnTimeV = .4f;
@@ -243,9 +169,9 @@ public class Variables : MonoBehaviour {
 				shape02Chance = 20;
 				shape03Chance = 20;
 				shape04Chance = 20;
-				shape05Chance = 14;
+				shape05Chance = 15;
 				shape00Chance = 5;
-				shape06Chance = 1;
+				shape06Chance = 0;
 				//shape07Chance = 0;
 				//spawnTimeV = .3f;
 
@@ -265,4 +191,112 @@ public class Variables : MonoBehaviour {
 				//spawnTimeV = .2f;
 		}
 	}
+
+	void GameOver(){
+		highestMultiplier = topMultiplier;
+		SaveScore ();
+		gameState = "Game Over";
+		//gameOver = true;
+		//Debug.Log ("GAME OVER Score: " + currentScore + "Best: " + previousScore+ "/n TopMulti: " +topMultiplier + " HighMulti: "+highestMultiplier);
+		Achievements ();
+		Time.timeScale = 0;
+	
+	}
+
+	void SaveScore() {
+		if (PlayerPrefs.HasKey("Highscore")) {
+			if (PlayerPrefs.GetInt("Highscore") < currentScore) {
+				PlayerPrefs.SetInt("Highscore", currentScore);
+				previousScore = currentScore;
+			}
+		} else {
+			PlayerPrefs.SetInt("Highscore", currentScore);
+
+		}
+
+		SaveMulti ();
+
+		//Achievements
+		if (PlayerPrefs.HasKey("Achievements")) {
+			if (PlayerPrefs.GetString("Achievements") != achievementBools) {
+				PlayerPrefs.SetString("Achievements", achievementBools);
+
+			}
+		} else {
+			PlayerPrefs.SetString("Achievements", achievementBools);
+			
+		}
+
+		PlayerPrefs.Save();
+	}
+
+	void SaveMulti(){
+		if (PlayerPrefs.HasKey("HighMulti")) {
+			if (PlayerPrefs.GetInt("HighMulti") < highestMultiplier) {
+				PlayerPrefs.SetInt("HighMulti", highestMultiplier);
+			}
+		} else {
+			PlayerPrefs.SetInt("HighMulti", highestMultiplier);
+		}
+	
+	}
+	
+	void LoadScore() {
+		if (PlayerPrefs.HasKey("Highscore")) {
+			previousScore = PlayerPrefs.GetInt("Highscore");
+		}
+		if (PlayerPrefs.HasKey("HighMulti")) {
+			highestMultiplier = PlayerPrefs.GetInt("HighMulti");
+			Debug.Log(PlayerPrefs.GetInt("HighMulti"));
+		}
+
+		if (PlayerPrefs.HasKey("Achievements")) {
+			achievementBools = PlayerPrefs.GetString("Achievements");
+		}
+	}
+
+	void Achievements(){
+	
+		if (achievementStrings.Length < 1) {
+						//Debug.Log ("No achievements yet");
+				} 
+		else {
+			//Debug.Log("Achievements:");
+	
+			//ACHIEVMENTS
+						//1 million
+			if (achievementStrings [1].Length < 1) {
+
+								
+
+								if (previousScore >= 1000) {
+		
+										//Debug.Log ("Achievement added: Your first grand!");
+
+								}
+						}
+				}
+
+		AchievementParse ();
+
+	}
+	void AchievementParse(){
+
+		for (int i = 0; i < achievementStrings.Length; i++) {
+
+			if (achievementStrings[i].Length > 0){
+
+				achievementBools = achievementBools + "1";
+
+			}
+			else if (achievementStrings[i].Length < 1){
+
+				achievementBools = achievementBools + "0";
+
+			}
+
+				}
+
+	}
+
 }
