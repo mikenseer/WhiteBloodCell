@@ -1,0 +1,112 @@
+using UnityEngine;
+using System.Collections;
+
+public class ShapeTracker : MonoBehaviour {
+
+	private int countS01;
+	private int countS02;
+	private int countS03;
+	private int countS04;
+	private int countS05;
+
+	public Timer timer;
+	public Button button;
+
+	// Use this for initialization
+	void Start () {
+		button.gameObject.SetActive (false);
+	}
+	
+	// Update is called once per frame
+	void Update () {
+
+
+
+	}
+
+
+	void OnTriggerEnter2D (Collider2D obj)  {
+		
+		string name = obj.gameObject.tag;
+		
+		//square
+		if (name == "Shape01") {
+			
+			countS01++;
+
+		}
+		//circle
+		if (name == "Shape02") {
+			
+			countS02++;
+
+		}
+		//triangle
+		if (name == "Shape03") {
+			
+			countS03++;
+
+		}
+		//diamond
+		if (name == "Shape04") {
+			
+			countS04++;
+
+		}
+		//star
+		if (name == "Shape05") {
+			
+			countS05++;
+			
+			
+			
+		}
+		//bonus shape adds a little time
+		if (name == "Shape00") {
+			
+			timer.time += 1.5f;
+			
+			
+		}
+
+
+		ActiveButton (countS01, countS02, countS03, countS04, countS05);
+	
+	}
+
+	//Activate the button when a shape has been collected a few times
+	void ActiveButton(int count1, int count2, int count3, int count4, int count5){
+	
+		if (count1 >= 10) {
+			countS01 = 0;
+			button.timeToAdd = 10;
+			button.gameObject.SetActive(true);
+			
+		}
+		if (count2 >= 10) {
+			countS02 = 0;
+			button.timeToAdd = 10;
+			button.gameObject.SetActive(true);
+			
+		}
+		if (count3 >= 10) {
+			countS03 = 0;
+			button.timeToAdd = 10;
+			button.gameObject.SetActive(true);
+			
+		}
+		if (count4 >= 10) {
+			countS04 = 0;
+			button.timeToAdd = 10;
+			button.gameObject.SetActive(true);
+			
+		}
+		if (count5 >= 10) {
+			countS05 = 0;
+			button.timeToAdd = 10;
+			button.gameObject.SetActive(true);
+			
+		}
+	
+	}
+}
