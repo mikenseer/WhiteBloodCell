@@ -1,0 +1,42 @@
+using UnityEngine;
+using System.Collections;
+
+public class Button : MonoBehaviour {
+	
+	public Timer timer;
+	public float timeToAdd;
+	
+	void Start(){
+		
+
+	}
+	
+	
+	
+	
+	void OnTouchDown() {
+		
+
+		timer.time += timeToAdd;
+		gameObject.SetActive (false);
+		
+	}
+	
+	void OnTouchUp() {
+		
+
+	
+		
+	}
+	
+	void OnTouchStay() {
+		
+
+
+	}
+	
+	void OnTouchExit() {
+
+	}
+	
+}
