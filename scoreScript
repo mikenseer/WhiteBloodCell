@@ -38,15 +38,14 @@ public class scoreScript : MonoBehaviour {
 		
 		string name = obj.gameObject.tag;
 
-		//Up triangle
+
 		if (name == "Shape01") {
 
-			UpdateScore(-2,0);
+			UpdateScore(1,10);
 
 
 			
 		}
-		//square
 		if (name == "Shape02") {
 			
 			UpdateScore(1,10);
@@ -54,7 +53,6 @@ public class scoreScript : MonoBehaviour {
 			
 			
 		}
-		//circle
 		if (name == "Shape03") {
 			
 			UpdateScore(1,10);
@@ -62,7 +60,6 @@ public class scoreScript : MonoBehaviour {
 			
 			
 		}
-		//diamond
 		if (name == "Shape04") {
 			
 			UpdateScore(1,25);
@@ -70,7 +67,6 @@ public class scoreScript : MonoBehaviour {
 			
 			
 		}
-		//star
 		if (name == "Shape05") {
 			
 			UpdateScore(1,50);
@@ -78,14 +74,14 @@ public class scoreScript : MonoBehaviour {
 			
 			
 		}
-		//Down triangle
+
 		if (name == "Shape00") {
 
 			UpdateScore(-1,0);
 
 			
 		}
-		//Extra life
+
 		if (name == "Shape06") {
 			
 			UpdateScore(0,0);
@@ -99,32 +95,30 @@ public class scoreScript : MonoBehaviour {
 
 		//For hitting shape
 		if (scoreType ==1) {
-		
+
+			vars.multiCount++;
+			vars.scoreCount++;
+			CalculateMultiplier(vars.multiCount);
+
 			vars.currentScore+= scoreValue * vars.scoreMultiplier;
-		
-			//Old Code
-			//vars.multiCount++;
-			//vars.scoreCount++;
-			//CalculateMultiplier(vars.multiCount);			
-			//if (vars.powerCount > 0){
-			//vars.powerCount--;
-			//}
+
+			if (vars.powerCount > 0){
+			vars.powerCount--;
+			}
 		}
 
-		//Hit down triangle, increase multiplier
+		//Hit beat, increase multiplier
 		if (scoreType == -1) {
-			
-			vars.scoreMultiplier++;
-			
-			// Old Code
-			//vars.powerCount += 3;
-			//vars.scoreMultiplier += 3;
+			vars.powerCount += 3;
 
-		}
-		//Hit up triangle, decrease multiplier
-		if (scoreType == -2) {
-			
-			vars.scoreMultiplier--;
+
+			//if(vars.previousScore < vars.currentScore){
+			//	vars.previousScore = vars.currentScore;
+			//}
+			//vars.currentScore = 0;
+			//vars.scoreCount = -2;
+			//CalculateMultiplier(vars.scoreCount);
+			vars.scoreMultiplier += 3;
 
 		}
 
