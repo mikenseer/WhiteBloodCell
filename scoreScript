@@ -9,11 +9,11 @@ public class scoreScript : MonoBehaviour {
 
 
 
-	public int currentScore;
-	public int scoreMultiplier;
+	private int currentScore;
+	private int scoreMultiplier;
 	private int scoreCount;
 	private int multiCount;
-	public int playerLives;
+	private int playerLives;
 
 	// Use this for initialization
 	void Start () {
@@ -36,88 +36,91 @@ public class scoreScript : MonoBehaviour {
 	//WHEN OBJECT HITS PLAYER
 	void OnTriggerEnter2D (Collider2D obj)  {
 		
+		multiCount = vars.multiCount;
+		scoreMultiplier = vars.scoreMultiplier;
+		
 		string name = obj.gameObject.tag;
 
-
+	//square
 		if (name == "Shape01") {
 
-			UpdateScore(1,10);
+			UpdateScore(1,10,multiCount,scoreMultiplier);
 
 
 			
 		}
+		//circle
 		if (name == "Shape02") {
 			
-			UpdateScore(1,10);
+			UpdateScore(1,10,multiCount,scoreMultiplier);
 
 			
 			
 		}
+		//triangle
 		if (name == "Shape03") {
 			
-			UpdateScore(1,10);
+			UpdateScore(1,10,multiCount,scoreMultiplier);
 
 			
 			
 		}
+		//diamond
 		if (name == "Shape04") {
 			
-			UpdateScore(1,25);
+			UpdateScore(1,25,multiCount,scoreMultiplier);
 
 			
 			
 		}
+		//star
 		if (name == "Shape05") {
 			
-			UpdateScore(1,50);
+			UpdateScore(1,50,multiCount,scoreMultiplier);
 
 			
 			
 		}
-
+		//BONUS
 		if (name == "Shape00") {
 
-			UpdateScore(-1,0);
+			UpdateScore(-1,0,multiCount,scoreMultiplier);
 
 			
 		}
-
+		//Lives
 		if (name == "Shape06") {
 			
-			UpdateScore(0,0);
+			UpdateScore(0,0,multiCount,scoreMultiplier);
 			//UpdateUIScore();
 			
 		}
 	}
 
 
-	void UpdateScore(int scoreType, int scoreValue) {
+	void UpdateScore(int scoreType, int scoreValue, int multiCount, int multi) {
 
 		//For hitting shape
 		if (scoreType ==1) {
 
-			vars.multiCount++;
+			//multiplier count that will reset when shape is missed.
+			multiCount++;
+			
+			//Count total shapes collected
 			vars.scoreCount++;
-			CalculateMultiplier(vars.multiCount);
+			//CalculateMultiplier(vars.multiCount, vars.scoreMultiplier);
 
-			vars.currentScore+= scoreValue * vars.scoreMultiplier;
+			vars.currentScore+= scoreValue * CalculateMultiplier(multiCount, multi);
 
 			if (vars.powerCount > 0){
 			vars.powerCount--;
 			}
 		}
 
-		//Hit beat, increase multiplier
+		//Bonus shape, increase multiplier
 		if (scoreType == -1) {
 			vars.powerCount += 3;
 
-
-			//if(vars.previousScore < vars.currentScore){
-			//	vars.previousScore = vars.currentScore;
-			//}
-			//vars.currentScore = 0;
-			//vars.scoreCount = -2;
-			//CalculateMultiplier(vars.scoreCount);
 			vars.scoreMultiplier += 3;
 
 		}
@@ -133,62 +136,30 @@ public class scoreScript : MonoBehaviour {
 
 
 
-	void CalculateMultiplier(int count){
+	int CalculateMultiplier(int count, int multi){
 
-		scoreMultiplier = Mathf.RoundToInt((count + 10)/10);
+		int updatedMulti;
+		int potentialMulti;
+	
+		//Determines how many shapes it takes in a row to get a multiplier.
+		potentialMulti = Mathf.RoundToInt((count + 10)/10);
 
-
-		if (vars.scoreMultiplier > 10) {
-			vars.scoreMultiplier--;
-			//vars.isContinuation = true;
+		//If multiplier is above 10, reduce it by 1 (previously vars.scoreMultiplier--)
+		if (multi > 10) {
+			updatedMulti = multi - 1;
+			vars.scoreMultiplier = updatedMulti;
+			
 			} 
-		else if (scoreMultiplier > vars.scoreMultiplier)
+			//If the calculated multiplier is greater than current multiplier but less than 10, update the multiplier to new.
+		else if (potentialMulti > multi && multi < 10)
 			{
-				vars.scoreMultiplier = Mathf.Clamp (scoreMultiplier,0,10);
+				updatedMulti = Mathf.Clamp (potentialMulti,0,10);
+				vars.scoreMultiplier = updatedMulti;
 			}
+		
+			vars.multiCount = count;
+			
+		return updatedMulti;	
 
-
-						//if (count < 0) {
-						//		vars.scoreMultiplier = -1;
-						//} else 
-//			if (count < 5) {
-//								if (vars.scoreMultiplier < 1) {
-//										vars.scoreMultiplier = 1;
-//								}
-//
-//						} else if (count < 20) {
-//								if (vars.scoreMultiplier < 2) {
-//										vars.scoreMultiplier = 2;
-//								}
-//						} else if (count < 30) {
-//								if (vars.scoreMultiplier < 3) {
-//										vars.scoreMultiplier = 3;
-//								}
-//						} 
-//			else if (count < 40) {
-//				if (vars.scoreMultiplier < 4) {
-//					vars.scoreMultiplier = 4;
-//				}
-//			} 
-//			else if (count < 50) {
-//				if (vars.scoreMultiplier < 5) {
-//					vars.scoreMultiplier = 5;
-//				}
-//			} else if (count < 100) {
-//								if (vars.scoreMultiplier < 5) {
-//										vars.scoreMultiplier = 5;
-//								}
-//						} else if (count > 100) {
-//			
-//								vars.scoreMultiplier = 10;
-//			
-//						} 
-				
-
-//		if (count%1000 == 0) {
-//			
-//			vars.playerLives++;
-//			
-//		}
 	}
 }
