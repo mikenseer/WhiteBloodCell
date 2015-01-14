@@ -2,81 +2,76 @@ using UnityEngine;
 using System.Collections;
 
 public class BottomEdge : MonoBehaviour {
-
+	
 	public Variables vars;
-
+	
 	void Start(){
 		GameObject v1 = GameObject.FindGameObjectWithTag ("Variables");
 		vars = v1.GetComponent<Variables> ();
-	
+		
 	}
-
-
+	
+	
 	void OnTriggerEnter2D(Collider2D shape){
-
+		
 		CheckIfShape(shape);
-						
-		}
-
+		
+	}
+	
 	void CheckIfShape(Collider2D shape){
 		if (shape.tag == "Shape") {
 			LoopThroughChildren(shape.gameObject);
-								
+			
 			shape.gameObject.SetActive (false);
 			vars.activeShapes--;
-				}
 		}
+	}
 	//Loops the shapeObject children through stuff
 	void LoopThroughChildren(GameObject shape){
-	
+		
 		foreach (Transform child in shape.transform) {
 			DoThingsWithChildren(child.gameObject);
 		}
-	
+		
 	}
 	//Checks if the shapeObject children (the shapes) are enabled
 	void DoThingsWithChildren(GameObject shape){
-	
+		
 		if (shape.renderer.enabled == false) {
 			shape.renderer.enabled = true;
 		} 
-		else if (shape.renderer.enabled = true) {			
+		else if (shape.renderer.enabled == true) {			
 			ShapePassedPlayer(shape.tag);
 		}
-	
+		
 	}
 	//Code to change multipliers and count shapes passing the player
 	void ShapePassedPlayer (string shape){
-		if ( shape == "Shape02" || shape == "Shape03" || shape == "Shape04" || shape == "Shape05") {
-			
-			//NewCode
-			vars.shapesLetPast++;
-			vars.playerLives--;
-			
-			//Old code 
-			// if (vars.scoreMultiplier > 0 && vars.scoreMultiplier <= 10) {
-						
-					// vars.shapesLetPast++;
-					
-					// if (vars.powerCount == 0){						
-						// vars.scoreMultiplier--;				
-					// }
-					
-						// vars.multiCount = 0;
-				// }
-				// else if (vars.scoreMultiplier > 10){
-					// vars.scoreMultiplier--;					
-				// }
-				// else if (vars.scoreMultiplier <= 0) {
-						//THIS IS GAME OVER
-						// vars.playerLives--;
-						// vars.shapesLetPast++;
-				// }
+		if (shape == "Shape01" || shape == "Shape02" || shape == "Shape03" || shape == "Shape04" || shape == "Shape05") {
+			if (vars.scoreMultiplier > 0 && vars.scoreMultiplier <= 10) {
 				
-				// if (vars.powerCount > 0){					
-					// vars.powerCount--;				
-				// }
+				vars.shapesLetPast++;
+				vars.playerLives--;
+				
+				if (vars.powerCount == 0){						
+					vars.scoreMultiplier--;				
+				}
+				
+				vars.multiCount = 0;
+			}
+			else if (vars.scoreMultiplier > 10){
+				vars.scoreMultiplier--;					
+			}
+			else if (vars.scoreMultiplier <= 0) {
+				//THIS IS GAME OVER
+				vars.playerLives--;
+				vars.shapesLetPast++;
+			}
+			
+			if (vars.powerCount > 0){					
+				vars.powerCount--;				
+			}
 		}
 	}
-
+	
 }
