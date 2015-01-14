@@ -7,36 +7,37 @@ public class Button : MonoBehaviour {
 	public float timeToAdd;
 	
 	void Start(){
+	
+		gameObject.SetActive(false);
+	
+	}
+	
+	void OnActive(){
 		
-
+		//deactivate button very quickly after active.
+		Invoke("DeactivateThis", .75f);
+		
 	}
 	
 	
+	void DeactivateThis(){
 	
+		gameObject.SetActive(false);
+	
+	}
 	
 	void OnTouchDown() {
 		
-
 		timer.time += timeToAdd;
+		CancelInvoke("DeactivateThis");
 		gameObject.SetActive (false);
 		
 	}
 	
-	void OnTouchUp() {
-		
-
+	//void OnTouchUp() {}
 	
-		
-	}
+	//void OnTouchStay() {}
 	
-	void OnTouchStay() {
-		
-
-
-	}
-	
-	void OnTouchExit() {
-
-	}
+	//void OnTouchExit() {}
 	
 }
