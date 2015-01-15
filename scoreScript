@@ -7,7 +7,7 @@ public class scoreScript : MonoBehaviour {
 
 	public GUIText guiText;
 
-
+	public Timer timer;
 
 	private int currentScore;
 	private int scoreMultiplier;
@@ -88,7 +88,7 @@ public class scoreScript : MonoBehaviour {
 
 			
 		}
-		//Lives
+		//Penalty shape
 		if (name == "Shape06") {
 			
 			UpdateScore(0,0,multiCount,scoreMultiplier);
@@ -125,10 +125,15 @@ public class scoreScript : MonoBehaviour {
 
 		}
 
-		//Add a life
+		//Penalty shape
 		if (scoreType == 0) {
 		
-			vars.playerLives++;
+			vars.scoreMultiplier -=3;
+			timer.time -=5f;
+		
+			if (vars.powerCount > 0){
+			vars.powerCount = 0;
+			}
 		
 		}
 	
