@@ -121,8 +121,13 @@ public class scoreScript : MonoBehaviour {
 			vars.currentScore+= scoreValue * CalculateMultiplier(multiCount, multi);
 			}
 			
+			//reduce bonuses
 			if (vars.powerCount > 0){
 			vars.powerCount--;
+			
+			}
+			if (vars.bonusMultiplier > multi){
+			vars.bonusMultiplier--;
 			}
 		}
 
