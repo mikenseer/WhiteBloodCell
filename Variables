@@ -96,87 +96,21 @@ public class Variables : MonoBehaviour {
 		}
 
 	void DetermineShapeSpawning(int multiplier){
-
-		if (multiplier == 1) {
 		
-
-				shape01Chance = 50;
-				shape02Chance = 50;
-				shape03Chance = 0;
-				shape04Chance = 0;
-				shape05Chance = 0;
-				shape00Chance = 0;
-				shape06Chance = 0;
-
-				//spawnTimeV = .8f;
-
+		//Linear math to progress shape chances to 10X
+		int multi = multiplier - 1;
 		
+		if (multiplier <= 10){
+		shape01Chance = (-.25*multi) + 40;
+		shape02Chance = (-.3*multi) + 40;
+		shape03Chance = (-.1*multi) + 20;
+		shape04Chance = (.3*multi) - 10;
+		shape05Chance = (.2*multi) - 5;
+		shape00Chance = (.15*multi);
+		shape06Chance = (.15*multi);
 		}
 
-		else if (multiplier == 2) {
-
-				shape01Chance = 50;
-				shape02Chance = 50;
-				shape03Chance = 0;
-				shape04Chance = 0;
-				shape05Chance = 0;
-				shape00Chance = 0;
-				shape06Chance = 0;
-
-				//spawnTimeV = .6f;
-
-			
-		}
-		
-		else if (multiplier >= 3 && multiplier < 5) {
-			
-
-				shape01Chance = 31;
-				shape02Chance = 31;
-				shape03Chance = 31;
-				shape04Chance = 5;
-				shape05Chance = 0;
-				shape00Chance = 2;
-				shape06Chance = 0;
-				//shape07Chance = 15;
-
-				//spawnTimeV = .5f;
-
-			
-		}
-		
-		else if (multiplier >= 5 && multiplier < 10) {
-			
-
-				shape01Chance = 25;
-				shape02Chance = 25;
-				shape03Chance = 25;
-				shape04Chance = 17;
-				shape05Chance = 5;
-				shape00Chance = 3;
-				shape06Chance = 0;
-				//shape07Chance = 0;
-
-				//spawnTimeV = .4f;
-
-			
-		}
-		
-		else if (multiplier == 10) {
-			
-
-				shape01Chance = 20;
-				shape02Chance = 20;
-				shape03Chance = 20;
-				shape04Chance = 20;
-				shape05Chance = 15;
-				shape00Chance = 5;
-				shape06Chance = 0;
-				//shape07Chance = 0;
-				//spawnTimeV = .3f;
-
-			
-		}
+	
 		else if (multiplier > 10) {
 
 				shape01Chance = 0;
@@ -186,14 +120,11 @@ public class Variables : MonoBehaviour {
 				shape05Chance = 45;
 				shape00Chance = 20;
 				shape06Chance = 0;
-				//shape07Chance = 5;
-
-				//spawnTimeV = .2f;
 		}
 	}
 
 	void GameOver(){
-		highestMultiplier = topMultiplier;
+		//highestMultiplier = topMultiplier;
 		SaveScore ();
 		gameState = "Game Over";
 		//gameOver = true;
@@ -232,11 +163,11 @@ public class Variables : MonoBehaviour {
 
 	void SaveMulti(){
 		if (PlayerPrefs.HasKey("HighMulti")) {
-			if (PlayerPrefs.GetInt("HighMulti") < highestMultiplier) {
-				PlayerPrefs.SetInt("HighMulti", highestMultiplier);
+			if (PlayerPrefs.GetInt("HighMulti") < topMultiplier) {
+				PlayerPrefs.SetInt("HighMulti", topMultiplier);
 			}
 		} else {
-			PlayerPrefs.SetInt("HighMulti", highestMultiplier);
+			PlayerPrefs.SetInt("HighMulti", topMultiplier);
 		}
 	
 	}
