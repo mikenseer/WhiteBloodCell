@@ -11,9 +11,11 @@ public class scoreScript : MonoBehaviour {
 
 	private int currentScore;
 	private int scoreMultiplier;
+	private int bonusMultiplier;
 	private int scoreCount;
 	private int multiCount;
 	private int playerLives;
+	private int powerCount;
 
 	// Use this for initialization
 	void Start () {
@@ -36,15 +38,17 @@ public class scoreScript : MonoBehaviour {
 	//WHEN OBJECT HITS PLAYER
 	void OnTriggerEnter2D (Collider2D obj)  {
 		
+		powerCount = vars.powerCount;
 		multiCount = vars.multiCount;
 		scoreMultiplier = vars.scoreMultiplier;
+		bonusMultiplier = vars.bonusMultiplier
 		
 		string name = obj.gameObject.tag;
 
 	//square
 		if (name == "Shape01") {
 
-			UpdateScore(1,10,multiCount,scoreMultiplier);
+			UpdateScore(1,10,multiCount,scoreMultiplier,bonusMultiplier);
 
 
 			
@@ -52,7 +56,7 @@ public class scoreScript : MonoBehaviour {
 		//circle
 		if (name == "Shape02") {
 			
-			UpdateScore(1,10,multiCount,scoreMultiplier);
+			UpdateScore(1,10,multiCount,scoreMultiplier,bonusMultiplier);
 
 			
 			
@@ -60,7 +64,7 @@ public class scoreScript : MonoBehaviour {
 		//triangle
 		if (name == "Shape03") {
 			
-			UpdateScore(1,10,multiCount,scoreMultiplier);
+			UpdateScore(1,10,multiCount,scoreMultiplier,bonusMultiplier);
 
 			
 			
@@ -68,7 +72,7 @@ public class scoreScript : MonoBehaviour {
 		//diamond
 		if (name == "Shape04") {
 			
-			UpdateScore(1,25,multiCount,scoreMultiplier);
+			UpdateScore(1,25,multiCount,scoreMultiplier,bonusMultiplier);
 
 			
 			
@@ -76,7 +80,7 @@ public class scoreScript : MonoBehaviour {
 		//star
 		if (name == "Shape05") {
 			
-			UpdateScore(1,50,multiCount,scoreMultiplier);
+			UpdateScore(1,50,multiCount,scoreMultiplier,bonusMultiplier);
 
 			
 			
@@ -84,21 +88,21 @@ public class scoreScript : MonoBehaviour {
 		//BONUS
 		if (name == "Shape00") {
 
-			UpdateScore(-1,0,multiCount,scoreMultiplier);
+			UpdateScore(-1,0,multiCount,scoreMultiplier,bonusMultiplier);
 
 			
 		}
 		//Penalty shape
 		if (name == "Shape06") {
 			
-			UpdateScore(0,0,multiCount,scoreMultiplier);
+			UpdateScore(0,0,multiCount,scoreMultiplier,bonusMultiplier);
 			//UpdateUIScore();
 			
 		}
 	}
 
 
-	void UpdateScore(int scoreType, int scoreValue, int multiCount, int multi) {
+	void UpdateScore(int scoreType, int scoreValue, int multiCount, int multi,int bonusMulti) {
 
 		//For hitting shape
 		if (scoreType ==1) {
@@ -110,8 +114,13 @@ public class scoreScript : MonoBehaviour {
 			vars.scoreCount++;
 			//CalculateMultiplier(vars.multiCount, vars.scoreMultiplier);
 
+			if (bonusMulti > multi){
+			vars.currentScore+= scoreValue * (CalculateMultiplier(multiCount, multi) + powerCount);
+			}
+			else{
 			vars.currentScore+= scoreValue * CalculateMultiplier(multiCount, multi);
-
+			}
+			
 			if (vars.powerCount > 0){
 			vars.powerCount--;
 			}
@@ -121,12 +130,8 @@ public class scoreScript : MonoBehaviour {
 		if (scoreType == -1) {
 			vars.powerCount += 3;
 
-			//Change this to separate value.  
-			//if that value is > scoreMultiplier, take the difference
-			//increase score multiplier by that difference before reseting.
-			//check that value and subtract from multiplier until they == the same.  
-			//if that value is bigger set it in the functions using score multiplier
-			vars.scoreMultiplier += 3;
+			//Adds a bonusMultiplier.  That way you don't just gain multipliers and jump through levels.
+			vars.bonusMultiplier = scoreMultipler + 3;
 
 		}
 
@@ -139,9 +144,11 @@ public class scoreScript : MonoBehaviour {
 			vars.powerCount = 0;
 			}
 			
+			//lower multiplier, reduce time, and reset multicount
 			else {
 			vars.scoreMultiplier -=3;
 			timer.time -=5f;
+			vars.multiCount = 0;
 			}
 		
 		}
