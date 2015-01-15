@@ -25,8 +25,8 @@ public class ShapeTracker : MonoBehaviour {
 		//button.gameObject.SetActive (false);
 		
 		//Set starting required counts.
-		countReq01 = 10;
-		countReq02 = 10;
+		countReq01 = 5;
+		countReq02 = 5;
 		countReq03 = 15;
 		countReq04 = 20;
 		countReq05 = 25;
@@ -75,7 +75,7 @@ public class ShapeTracker : MonoBehaviour {
 	//Squares
 		if (count1 >= countReq01) {
 			countS01 = 0;
-			button.timeToAdd = 10;
+			button.timeToAdd = 5;
 			button.gameObject.SetActive(true);
 			
 			//Keep the required count at a ceiling
@@ -88,7 +88,7 @@ public class ShapeTracker : MonoBehaviour {
 	//Circles
 		if (count2 >= countReq02) {
 			countS02 = 0;
-			button.timeToAdd = 10;
+			button.timeToAdd = 5;
 			button.gameObject.SetActive(true);
 			
 			//Keep the required count at a ceiling
@@ -120,20 +120,20 @@ public class ShapeTracker : MonoBehaviour {
 			//Keep the required count at a ceiling
 			if (countReq04 < 100)
 			{
-			countReq04 += 5;
+			countReq04 += 10;
 			}
 			
 		}
 	//Stars
 		if (count5 >= countReq05) {
 			countS05 = 0;
-			button.timeToAdd = 10;
+			button.timeToAdd = 15;
 			button.gameObject.SetActive(true);
 			
 			//Keep the required count at a ceiling
 			if (countReq05 < 100)
 			{
-			countReq05 += 5;
+			countReq05 += 10;
 			}
 			
 		}
