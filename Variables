@@ -17,6 +17,7 @@ public class Variables : MonoBehaviour {
 	public int scoreCount;
 	public int multiCount;
 	public int scoreMultiplier = 1;
+	public int bonusMultiplier;
 	public int topMultiplier;
 	public int highestMultiplier;
 
@@ -55,7 +56,14 @@ public class Variables : MonoBehaviour {
 
 	void Update()
 	{
+		if (bonusMultipler > scoreMultipler){
+				ShapeSpeed (bonusMultiplier);
+		}
+		else
+		{
 		ShapeSpeed (scoreMultiplier);
+		}
+		
 		UpdateUIScore ();
 
 		if (gameOver == true) {
