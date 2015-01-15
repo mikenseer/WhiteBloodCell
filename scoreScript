@@ -124,6 +124,8 @@ public class scoreScript : MonoBehaviour {
 			//Change this to separate value.  
 			//if that value is > scoreMultiplier, take the difference
 			//increase score multiplier by that difference before reseting.
+			//check that value and subtract from multiplier until they == the same.  
+			//if that value is bigger set it in the functions using score multiplier
 			vars.scoreMultiplier += 3;
 
 		}
