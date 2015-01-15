@@ -15,21 +15,21 @@ public class Button : MonoBehaviour {
 	void OnActive(){
 		
 		//deactivate button very quickly after active.
-		Invoke("DeactivateThis", .75f);
+		//Invoke("DeactivateThis", .75f);
 		
 	}
 	
 	
-	void DeactivateThis(){
+//	void DeactivateThis(){
 	
-		gameObject.SetActive(false);
+//		gameObject.SetActive(false);
 	
-	}
+//	}
 	
 	void OnTouchDown() {
 		
-		timer.time += timeToAdd;
-		CancelInvoke("DeactivateThis");
+		timer.time = Mathf.Clamp(timer.time + timeToAdd, 0f, 30f);
+		//CancelInvoke("DeactivateThis");
 		gameObject.SetActive (false);
 		
 	}
