@@ -121,6 +121,9 @@ public class scoreScript : MonoBehaviour {
 		if (scoreType == -1) {
 			vars.powerCount += 3;
 
+			//Change this to separate value.  
+			//if that value is > scoreMultiplier, take the difference
+			//increase score multiplier by that difference before reseting.
 			vars.scoreMultiplier += 3;
 
 		}
@@ -128,11 +131,15 @@ public class scoreScript : MonoBehaviour {
 		//Penalty shape
 		if (scoreType == 0) {
 		
-			vars.scoreMultiplier -=3;
-			timer.time -=5f;
+			//If under powerup, shape doesn't hurt, just removes powerup.
 		
 			if (vars.powerCount > 0){
 			vars.powerCount = 0;
+			}
+			
+			else {
+			vars.scoreMultiplier -=3;
+			timer.time -=5f;
 			}
 		
 		}
