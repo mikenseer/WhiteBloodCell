@@ -154,6 +154,7 @@ public class scoreScript : MonoBehaviour {
 			vars.scoreMultiplier -=3;
 			timer.time -=5f;
 			vars.multiCount = 0;
+			vars.playerLives--;
 			}
 		
 		}
