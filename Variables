@@ -57,23 +57,30 @@ public class Variables : MonoBehaviour {
 	void Update()
 	{
 		if (bonusMultipler > scoreMultipler){
-				ShapeSpeed (bonusMultiplier);
+			ShapeSpeed (bonusMultiplier);
+			if (topMultiplier < bonusMultiplier) {
+				topMultiplier = bonusMultiplier;		
+			}
 		}
 		else
 		{
 		ShapeSpeed (scoreMultiplier);
+		if (topMultiplier < scoreMultiplier) {
+			topMultiplier = scoreMultiplier;		
+		}
 		}
 		
-		UpdateUIScore ();
+		
 
 		if (gameOver == true) {
 		
 			GameOver();
 		
 		}
-		if (topMultiplier < scoreMultiplier) {
-			topMultiplier = scoreMultiplier;		
+		else{
+		UpdateUIScore ();
 		}
+		
 
 	}
 
@@ -109,13 +116,13 @@ public class Variables : MonoBehaviour {
 		int multi = multiplier - 1;
 		
 		if (multiplier <= 10){
-		shape01Chance = (-.25*multi) + 40;
-		shape02Chance = (-.3*multi) + 40;
-		shape03Chance = (-.1*multi) + 20;
-		shape04Chance = (.3*multi) - 10;
-		shape05Chance = (.2*multi) - 5;
-		shape00Chance = (.15*multi);
-		shape06Chance = (.15*multi);
+		shape01Chance = (int)(-2.5*multi) + 40;
+		shape02Chance = (int)(-3*multi) + 40;
+		shape03Chance = (int)(-1*multi) + 20;
+		shape04Chance = (int)(3*multi) - 10;
+		shape05Chance = (int)(2*multi) - 5;
+		shape00Chance = (int)(1.5*multi);
+		shape06Chance = (int)(1.5*multi);
 		}
 
 	
@@ -125,9 +132,9 @@ public class Variables : MonoBehaviour {
 				shape02Chance = 0;
 				shape03Chance = 0;
 				shape04Chance = 35;
-				shape05Chance = 45;
+				shape05Chance = 40;
 				shape00Chance = 20;
-				shape06Chance = 0;
+				shape06Chance = 5;
 		}
 	}
 
@@ -186,7 +193,7 @@ public class Variables : MonoBehaviour {
 		}
 		if (PlayerPrefs.HasKey("HighMulti")) {
 			highestMultiplier = PlayerPrefs.GetInt("HighMulti");
-			Debug.Log(PlayerPrefs.GetInt("HighMulti"));
+		//	Debug.Log(PlayerPrefs.GetInt("HighMulti"));
 		}
 
 		if (PlayerPrefs.HasKey("Achievements")) {
