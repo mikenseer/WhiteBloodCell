@@ -88,7 +88,8 @@ public class Variables : MonoBehaviour {
 		
 		guiText.text = gameState+"\n Score: " + currentScore +
 			" Best: " + previousScore + 
-				" \n " + scoreMultiplier + "x Game: " + topMultiplier + "x Best: " + highestMultiplier + "x \n Count: " + scoreCount;
+				" \n " + scoreMultiplier + "x Game: " + topMultiplier + "x Best: " + highestMultiplier +
+				"x \n Count: " + scoreCount + "/n Lives: " + playerLives;
 		
 	}
 
