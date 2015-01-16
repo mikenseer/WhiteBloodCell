@@ -41,7 +41,8 @@ public class scoreScript : MonoBehaviour {
 		powerCount = vars.powerCount;
 		multiCount = vars.multiCount;
 		scoreMultiplier = vars.scoreMultiplier;
-		bonusMultiplier = vars.bonusMultiplier
+		bonusMultiplier = vars.bonusMultiplier;
+		playerLives = vars.playerLives;
 		
 		string name = obj.gameObject.tag;
 
@@ -154,7 +155,13 @@ public class scoreScript : MonoBehaviour {
 			vars.scoreMultiplier -=3;
 			timer.time -=5f;
 			vars.multiCount = 0;
+			
+			if(playerLives > 0){
 			vars.playerLives--;
+			}
+			else{
+			vars.gameOver = true;
+			}
 			}
 		
 		}
