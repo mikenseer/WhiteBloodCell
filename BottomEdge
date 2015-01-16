@@ -5,6 +5,9 @@ public class BottomEdge : MonoBehaviour {
 	
 	public Variables vars;
 	public Timer timer;
+	private powerCount;
+	private scoreMultiplier;
+	private bonusMultiplier;
 	
 	void Start(){
 		GameObject v1 = GameObject.FindGameObjectWithTag ("Variables");
@@ -14,7 +17,9 @@ public class BottomEdge : MonoBehaviour {
 	
 	
 	void OnTriggerEnter2D(Collider2D shape){
-		
+		powerCount = vars.powerCount;
+		scoreMultiplier = vars.scoreMultiplier;
+		bonusMultiplier = vars.bonusMultiplier;
 		CheckIfShape(shape);
 		
 	}
@@ -51,35 +56,36 @@ public class BottomEdge : MonoBehaviour {
 		if (shape == "Shape01" || shape == "Shape02" || shape == "Shape03" || shape == "Shape04" || shape == "Shape05") {
 			
 			//Wile multiplier is in normal zone
-			if (vars.scoreMultiplier > 0 && vars.scoreMultiplier <= 10) {
+			if (scoreMultiplier >= 0 && scoreMultiplier <= 10) {
 				
-				vars.shapesLetPast++;
+				//vars.shapesLetPast++;
 				//vars.playerLives--;
 				
-				//While not under bonus, lose multiplier and time
-				if (vars.powerCount == 0){						
-					vars.scoreMultiplier--;	
-					timer.time -= 1.5f;
+			
+				if (powerCount == 0){						
+					//vars.scoreMultiplier--;	
+					//timer.time -= 1.5f;
+					vars.multiCount = 0;
 				}
 				
 				//Resets count for earning multiplier
-				vars.multiCount = 0;
+			
 			}
 			
-			//While under bonus, only loss is multiplier
-			else if (vars.scoreMultiplier > 10){
-				vars.scoreMultiplier--;					
+			//While under bonus, only loss is bonusMultiplier
+			else if (bonusMultiplier > scoreMultiplier){
+				vars.bonusMultiplier--;					
 			}
 			
 			//Don't coun't shapes let past if user gets this low.
-			else if (vars.scoreMultiplier <= 0) {
+			//else if (scoreMultiplier <= 0) {
 				
 				//vars.playerLives--;
-				vars.shapesLetPast++;
-			}
+				//vars.shapesLetPast++;
+			//}
 			
 			//Reduce power count always until back at 0.
-			if (vars.powerCount > 0){					
+			if (powerCount > 0){					
 				vars.powerCount--;				
 			}
 		}
