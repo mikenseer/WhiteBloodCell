@@ -123,11 +123,11 @@ public class scoreScript : MonoBehaviour {
 			}
 			
 			//reduce bonuses
-			if (vars.powerCount > 0){
+			if (powerCount > 0){
 			vars.powerCount--;
 			
 			}
-			if (vars.bonusMultiplier > multi){
+			if (bonusMultiplier > multi){
 			vars.bonusMultiplier--;
 			}
 		}
@@ -146,7 +146,7 @@ public class scoreScript : MonoBehaviour {
 		
 			//If under powerup, shape doesn't hurt, just removes powerup.
 		
-			if (vars.powerCount > 0){
+			if (powerCount > 0){
 			vars.powerCount = 0;
 			}
 			
