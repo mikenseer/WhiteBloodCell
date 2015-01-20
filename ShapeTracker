@@ -3,19 +3,11 @@ using System.Collections;
 
 public class ShapeTracker : MonoBehaviour {
 
-	//current count for each shape square, circle, ttriangle, diamond, star
-	private int countS01;
-	private int countS02;
-	private int countS03;
-	private int countS04;
-	private int countS05;
 	
-	//count required for button to appear
-	private int countReq01;
-	private int countReq02;
-	private int countReq03;
-	private int countReq04;
-	private int countReq05;
+	private int[] cargoBay;
+	private int cargoBaySize = 5;
+	
+	
 
 	public Timer timer;
 	public Button button;
@@ -25,11 +17,7 @@ public class ShapeTracker : MonoBehaviour {
 		//button.gameObject.SetActive (false);
 		
 		//Set starting required counts.
-		countReq01 = 5;
-		countReq02 = 5;
-		countReq03 = 15;
-		countReq04 = 20;
-		countReq05 = 25;
+	
 	}
 	
 
@@ -41,102 +29,72 @@ public class ShapeTracker : MonoBehaviour {
 		
 		//square
 		if (name == "Shape01") {			
-			countS01++;
+			CargoBay(1);
 		}
 		//circle
 		if (name == "Shape02") {			
-			countS02++;
+			CargoBay(2);
 		}
 		//triangle
 		if (name == "Shape03") {			
-			countS03++;
+			CargoBay(3);
 		}
 		//diamond
 		if (name == "Shape04") {			
-			countS04++;
+			CargoBay(4);
 		}
 		//star
 		if (name == "Shape05") {			
-			countS05++;
+			CargoBay(5);
 		}
 		//bonus shape adds a little time
-		if (name == "Shape00") {			
-			timer.time += 1.5f;			
-		}
+		//if (name == "Shape07") {			
+		//		CargoBay(7);	
+		//}
 
-		//Check count and activate button
-		ActiveButton (countS01, countS02, countS03, countS04, countS05);
+		ActiveButton(cargoBay.length);
+		
+		
+		
 	
 	}
 
-	//Activate the button when a shape has been collected a few times
-	void ActiveButton(int count1, int count2, int count3, int count4, int count5){
+	void CargoBay(int shapeNum){
 	
-	//Squares
-		if (count1 >= countReq01) {
-			countS01 = 0;
-			button.timeToAdd = 5;
-			button.gameObject.SetActive(true);
-			
-			//Keep the required count at a ceiling
-			if (countReq01 < 100)
-			{
-			countReq01 += 5;
+	//First in First out loop to track the shapes in cargoBay.
+		for ( int = 0; i < cargoBaySize; i++)
+		{
+			if (cargoBay[i] == null){
+				cargoBay[i] = shapeNum;
 			}
-			
-		}
-	//Circles
-		if (count2 >= countReq02) {
-			countS02 = 0;
-			button.timeToAdd = 5;
-			button.gameObject.SetActive(true);
-			
-			//Keep the required count at a ceiling
-			if (countReq02 < 100)
+			else //if (cargoBay.Length == cargoBaySize)
 			{
-			countReq02 += 5;
-			}
 			
+				foreach (int n in cargoBay)
+				{
+					if (n <  (cargoBaySize - 1)  ){
+					cargoBay[n] = cargoBay[n++];
+					}
+					else {
+					cargoBay[cargoBaySize - 1] = shapeNum;
+					}
+					
+				}
+			}
 		}
-	//Triangles
-		if (count3 >= countReq03) {
-			countS03 = 0;
-			button.timeToAdd = 10;
+	
+	}
+	
+	//Activate the button when cargo bay is full
+	void ActiveButton(int count){
+	
+	//CargoBay is full
+		if (count >= cargoBaySize) {
+			
 			button.gameObject.SetActive(true);
-			
-			//Keep the required count at a ceiling
-			if (countReq03 < 100)
-			{
-			countReq03 += 5;
-			}
-			
+		
 		}
-	//Diamonds
-		if (count4 >= countReq04) {
-			countS04 = 0;
-			button.timeToAdd = 10;
-			button.gameObject.SetActive(true);
-			
-			//Keep the required count at a ceiling
-			if (countReq04 < 100)
-			{
-			countReq04 += 10;
-			}
-			
-		}
-	//Stars
-		if (count5 >= countReq05) {
-			countS05 = 0;
-			button.timeToAdd = 15;
-			button.gameObject.SetActive(true);
-			
-			//Keep the required count at a ceiling
-			if (countReq05 < 100)
-			{
-			countReq05 += 10;
-			}
-			
-		}
+	
 	
 	}
 }
