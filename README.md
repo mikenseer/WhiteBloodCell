@@ -1,26 +1,21 @@
-# Shapes
+# Cells 
 
-Shapes fall from top of screen
+Cells fall from top of screen
 
-Player can slide left&right to catch shapes
+Player can slide left&right to catch bad Cells and avoid good cells
 
-More shapes = more multiplier = more speed
+Fills up cargo bay so player can destroy the bad cells.
+  -Can only hold X number of cells, first in first out overflow
+  -Destroying 2+ of same shape next to eachother yields more score.
 
-Keeps track of number of each shape caught.
+Hitting friendly cells reduces shields.
 
+When new Cell falls from top, game pauses and message appears explaining that cell.
 
-Timer counts down.  If timer reaches 0, game over.
-
-When X number of specific shape cauhght, bonus button appears
-  -Button does not last long
-  -Touching it adds points
-  -Touching or missing it resets the count of shapes caught
-  -# of shapes required to produce the button is increased
-  
-Missing shapes reduces bonus multiplier
-
-
-
-Each level is finite in time.  Certain scores much be reached to progress.
+Each level is finite in time/destroyable cells.  Certain scores much be reached to progress.
 Low med and high required scores for each level.
+First time cargo bay is full, game pauses to explain destroy button.
 
+Some levels based on dodging, some on collecting, some both.
+
+"Missions".  i.e. destroy X number.  Reach X score.  Reach X Speed. etc...
