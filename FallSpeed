@@ -1,35 +1,45 @@
 using UnityEngine;
 using System.Collections;
 
-public class MYCLASSNAME : MonoBehaviour {
+public class ShapeObject : MonoBehaviour {
 
- private float currentSpeed;
- private float newSpeed;
- public float smoothTime = .3f;
- 
- void OnActive(){
+
+	private Variables vars;
+	private float currentSpeed;
+	private float newSpeed;
+	private float smoothTime = .5f;
+
+	void Start(){
+
+		GameObject v1 = GameObject.FindGameObjectWithTag ("Variables");
+		vars = v1.GetComponent<Variables> ();
+
+		//fallSpeed = vars.fallSpeedV;
 	
- }
- 
- void  Update (){
-   
-   if (currentSpeed != vars.fallSpeedV)
-   {		
-		newSpeed = Mathf.SmoothDamp(currentSpeed, vars.fallSpeedV, 0, smoothTime);
-		currentSpeed = new float(newSpeed);
-	{
-	
-	/////OR/////
-	
-	if (currentSpeed < vars.fallSpeedV){
-	newSpeed = Mathf.SmoothStep(currentSpeed, vars.fallSpeedV, smoothTime);
-	currentSpeed = new float(newSpeed);
 	}
-	
-	else if (currentSpeed > vars.fallSpeedV){
-	newSpeed = Mathf.SmoothStep(vars.fallSpeedV, currentSpeed, smoothTime);
-	currentSpeed = new float(newSpeed);
+
+	void FixedUpdate () {
+
+		//transform.Translate (0, fallSpeed * Time.deltaTime, 0);
+		//rigidbody2D.velocity = transform.up * vars.fallSpeedV;
+		rigidbody2D.velocity = transform.up * currentSpeed;
+
 	}
- 
- }
+
+
+	void Update(){
+		if (currentSpeed < vars.fallSpeedV){
+			newSpeed = Mathf.SmoothStep(currentSpeed, vars.fallSpeedV, smoothTime);
+			currentSpeed = newSpeed;
+
+		}
+		
+		else if (currentSpeed > vars.fallSpeedV){
+			newSpeed = Mathf.SmoothStep(vars.fallSpeedV, currentSpeed, smoothTime);
+			currentSpeed = newSpeed;
+			//Debug.Log (currentSpeed);
+		}
+	}
+
 }
+
