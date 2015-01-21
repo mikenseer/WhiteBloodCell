@@ -5,9 +5,9 @@ public class BottomEdge : MonoBehaviour {
 	
 	public Variables vars;
 	public Timer timer;
-	private powerCount;
-	private scoreMultiplier;
-	private bonusMultiplier;
+	private int powerCount;
+	private int scoreMultiplier;
+	private int bonusMultiplier;
 	
 	void Start(){
 		GameObject v1 = GameObject.FindGameObjectWithTag ("Variables");
@@ -61,27 +61,27 @@ public class BottomEdge : MonoBehaviour {
 				//vars.shapesLetPast++;
 				//vars.playerLives--;
 				
-			
+				
 				if (powerCount == 0){						
 					//vars.scoreMultiplier--;	
 					//timer.time -= 1.5f;
-					vars.multiCount = 0;
+					//vars.multiCount = 0;
 				}
 				
 				//Resets count for earning multiplier
-			
+				
 			}
 			
 			//While under bonus, only loss is bonusMultiplier
-			else if (bonusMultiplier > scoreMultiplier){
+			else if (bonusMultiplier > scoreMultiplier && bonusMultiplier > 10){
 				vars.bonusMultiplier--;					
 			}
 			
 			//Don't coun't shapes let past if user gets this low.
 			//else if (scoreMultiplier <= 0) {
-				
-				//vars.playerLives--;
-				//vars.shapesLetPast++;
+			
+			//vars.playerLives--;
+			//vars.shapesLetPast++;
 			//}
 			
 			//Reduce power count always until back at 0.
