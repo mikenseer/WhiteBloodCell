@@ -5,11 +5,16 @@ public class Button : MonoBehaviour {
 	
 	public Timer timer;
 	public float timeToAdd;
+	public Variables vars;
+	public ShapeTracker st;
+
+	private int buttonCount;
+	private int winningButtonCount;
 	
 	void Start(){
-	
+		
 		gameObject.SetActive(false);
-	
+		
 	}
 	
 	void OnActive(){
@@ -20,15 +25,21 @@ public class Button : MonoBehaviour {
 	}
 	
 	
-//	void DeactivateThis(){
+	//	void DeactivateThis(){
 	
-//		gameObject.SetActive(false);
+	//		gameObject.SetActive(false);
 	
-//	}
+	//	}
 	
 	void OnTouchDown() {
-		
-		timer.time = Mathf.Clamp(timer.time + timeToAdd, 0f, 30f);
+		buttonCount = vars.buttonCount;
+		winningButtonCount = vars.winningButtonCount;
+
+		vars.buttonCount++;		
+
+		st.cargoBay = new int[5];
+				
+		//timer.time = Mathf.Clamp(timer.time + timeToAdd, 0f, 30f);
 		//CancelInvoke("DeactivateThis");
 		gameObject.SetActive (false);
 		
