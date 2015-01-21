@@ -108,19 +108,20 @@ public class scoreScript : MonoBehaviour {
 		//For hitting shape
 		if (scoreType ==1) {
 			
-			//multiplier count that will reset when shape is missed.
+			//multiplier count that will reset when anti shape is hit
 			multiCount++;
 			
 			//Count total shapes collected
 			vars.scoreCount++;
 			//CalculateMultiplier(vars.multiCount, vars.scoreMultiplier);
 			
-			if (bonusMulti > multi && bonusMulti > 10){
-				vars.currentScore+= scoreValue * (CalculateMultiplier(multiCount, multi) + powerCount);
-			}
-			else{
-				vars.currentScore+= scoreValue * CalculateMultiplier(multiCount, multi);
-			}
+			//Calculate score
+			//if (bonusMulti > multi && bonusMulti > 10){
+			//	vars.currentScore+= scoreValue * (CalculateMultiplier(multiCount, multi) + powerCount);
+			//}
+			//else{
+			//	vars.currentScore+= scoreValue * CalculateMultiplier(multiCount, multi);
+			//}
 			
 			//reduce bonuses
 			if (powerCount > 0){
@@ -160,20 +161,24 @@ public class scoreScript : MonoBehaviour {
 				vars.powerCount = 0;
 			}
 
-			if (scoreMultiplier == 1)
-			{
-				vars.scoreMultiplier = 0;
-				vars.gameState = "Ran out of fuel!";
-				vars.gameOver = true;
-			}
+				//If player runs out of fuel
+			//if (scoreMultiplier == 1)
+			//{
+				//vars.scoreMultiplier = 0;
+				//vars.gameState = "Ran out of fuel!";
+				//vars.gameOver = true;
+			//}
 			
 			//lower multiplier, reduce time, and reset multicount
 
-				vars.scoreMultiplier -=1;
+				if (multi > 2){
+					vars.scoreMultiplier -=1;
+				}
 				timer.time -=5f;
 				vars.multiCount = (scoreMultiplier - 1) * 10;
 				
 				if(playerLives > 0){
+					//Shields
 					vars.playerLives--;
 				}
 				else{
