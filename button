@@ -7,9 +7,16 @@ public class Button : MonoBehaviour {
 	public float timeToAdd;
 	public Variables vars;
 	public ShapeTracker st;
+	
+	public int shape01Score = 10;
+	public int shape02Score = 20;
+	public int shape03Score = 30;
+	public int shape04Score = 50;
+	public int shape05Score = 100;
 
 	private int buttonCount;
 	private int winningButtonCount;
+	private int cargoBaySize;
 	
 	void Start(){
 		
@@ -19,33 +26,111 @@ public class Button : MonoBehaviour {
 	
 	void OnActive(){
 		
-		//deactivate button very quickly after active.
-		//Invoke("DeactivateThis", .75f);
 		
 	}
 	
-	
-	//	void DeactivateThis(){
-	
-	//		gameObject.SetActive(false);
-	
-	//	}
 	
 	void OnTouchDown() {
-		buttonCount = vars.buttonCount;
-		winningButtonCount = vars.winningButtonCount;
-
+		//buttonCount = vars.buttonCount;
+		//maxButtonCount = vars.maxButtonCount;
+		cargoBaySize = st.cargoBaySize;
+		
 		vars.buttonCount++;		
-
+		CalculateScore(st.cargoBay);
+		
+		//Empties cargo bay
 		st.cargoBay = new int[5];
 				
-		//timer.time = Mathf.Clamp(timer.time + timeToAdd, 0f, 30f);
-		//CancelInvoke("DeactivateThis");
-		gameObject.SetActive (false);
+		
 		
 	}
 	
-	//void OnTouchUp() {}
+	//Loops through cargo to calculate counts of each shape
+	void CalculateScore(int[] cargo){
+	
+		
+		int count1 = 0;
+		int count2 = 0;
+		int count3 = 0;
+		int count4 = 0;
+		int count5 = 0;
+	
+		for ( int i = 0; i < cargoBaySize; i++)
+		{
+		//Adds to score, counts # of shape in cargo hold
+			if (cargo[i] == 1){
+				
+				count1++;
+				
+			}
+			else if (cargo[i] == 2){
+				
+				count2++;
+			}
+			else if (cargo[i] == 3){
+				
+				count3++;
+			}
+			else if (cargo[i] == 4){
+				
+				count4++;
+			}
+			else if (cargo[i] == 5){
+				
+				count5++;
+			}
+		}
+		
+		//Calculates score for each shape if any exist in the cargobay
+		if (count1 > 0){
+			CalculateBonus(count1, shape01Score);
+		}
+		if (count2 > 0){
+			CalculateBonus(count2, shape02Score);
+		}
+		if (count3 > 0){
+			CalculateBonus(count3, shape03Score);
+		}
+		if (count4 > 0){
+			CalculateBonus(count4, shape04Score);
+		}
+		if (count5 > 0){
+			CalculateBonus(count5, shape05Score);
+		}
+		
+		
+	
+	}
+	
+	//calculates bonuses based on multiple of same shape
+	void CalculateBonus(int count, int scoreValue){
+		int scoreInt = 0;
+		
+		if (count >= 3  && count < 5){
+		
+			scoreInt = scoreValue * count * 5;
+		
+		}
+		if (count >=5){
+		
+			scoreInt = scoreValue * count * 10;
+		
+		}
+		else {
+		
+			scoreInt = scoreValue * count;
+		
+		}
+		
+		vars.currentScore += scoreInt;
+		
+	
+	}
+	
+	//After button press, deactivate button
+	void OnTouchUp() {
+		gameObject.SetActive (false);
+	}
 	
 	//void OnTouchStay() {}
 	
