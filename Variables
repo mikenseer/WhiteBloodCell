@@ -2,32 +2,32 @@ using UnityEngine;
 using System.Collections;
 
 public class Variables : MonoBehaviour {
-
+	
 	public GUIText guiText;
-
+	
 	public int pooledAmountV = 10;
 	public float fallSpeedV = -4f;
 	public float spawnTimeV = .3f;
 	//public float removeTimeV = 3f;
-
+	
 	public float maxSpeed = -10f;
 	public float minSpeed = -3f;
 	public float boostSpeed = 2f;
-
+	
 	public int scoreCount;
 	public int multiCount;
 	public int scoreMultiplier = 1;
-	public int bonusMultiplier;
+	public int bonusMultiplier = 0;
 	public int topMultiplier;
 	public int highestMultiplier;
-
+	
 	public int playerLives = 3;
-
+	
 	public int previousScore;
 	public int currentScore;
 	public int powerCount = 0;
 	public int shapesLetPast = 0;
-
+	
 	public int shape01Chance = 30;
 	public int shape02Chance = 30;
 	public int shape03Chance = 30;
@@ -37,26 +37,31 @@ public class Variables : MonoBehaviour {
 	public int shape06Chance = 0;
 	public int shape07Chance = 0;
 
+	public int buttonCount = 0;
+	public int winningButtonCount = 10;
+	
 	public bool isContinuation = false;
-
+	
 	public int activeShapes;
-
+	
 	public string gameState = "FLOW";
-
+	
 	public string[] achievementStrings;
 	public string achievementBools;
-
+	
 	public bool gameOver = false;
 
-	void Start(){
-
-		LoadScore ();
+	public ResetGame resetButton;
 	
+	void Start(){
+		
+		LoadScore ();
+		
 	}
-
+	
 	void Update()
 	{
-		if (bonusMultipler > scoreMultipler){
+		if (bonusMultiplier >= scoreMultiplier && bonusMultiplier >= 10){
 			ShapeSpeed (bonusMultiplier);
 			if (topMultiplier < bonusMultiplier) {
 				topMultiplier = bonusMultiplier;		
@@ -64,35 +69,36 @@ public class Variables : MonoBehaviour {
 		}
 		else
 		{
-		ShapeSpeed (scoreMultiplier);
-		if (topMultiplier < scoreMultiplier) {
-			topMultiplier = scoreMultiplier;		
-		}
+			ShapeSpeed (scoreMultiplier);
+			if (topMultiplier < scoreMultiplier) {
+				topMultiplier = scoreMultiplier;
+				bonusMultiplier = scoreMultiplier;
+			}
 		}
 		
 		
-
+		
 		if (gameOver == true) {
-		
+			
 			GameOver();
-		
+			
 		}
 		else{
-		UpdateUIScore ();
+			UpdateUIScore ();
 		}
 		
-
+		
 	}
-
+	
 	void UpdateUIScore(){
 		
-		guiText.text = gameState+"\n Score: " + currentScore +
-			" Best: " + previousScore + 
-				" \n " + scoreMultiplier + "x Game: " + topMultiplier + "x Best: " + highestMultiplier +
-				"x \n Count: " + scoreCount + "/n Lives: " + playerLives;
+		guiText.text = gameState+"\n $ " + currentScore +
+			" Best $ " + previousScore + 
+				"\n Fuel: " + bonusMultiplier + "0% Best: " + highestMultiplier + "0%" +
+				" \n Drop-Offs: " + buttonCount + "\n Shields: " + playerLives;
 		
 	}
-
+	
 	void ShapeSpeed (int multiplier){
 		//float aFloat;
 		if (multiplier <= 10){
@@ -107,49 +113,66 @@ public class Variables : MonoBehaviour {
 			//fallSpeedV = -((boostSpeed * multiplier) + multiplier);
 			DetermineShapeSpawning (multiplier);;
 		}
-
+		
+		
+	}
 	
-		}
-
 	void DetermineShapeSpawning(int multiplier){
 		
 		//Linear math to progress shape chances to 10X
 		int multi = multiplier - 1;
-		
+
 		if (multiplier <= 10){
-		shape01Chance = (int)(-2.5*multi) + 40;
-		shape02Chance = (int)(-3*multi) + 40;
-		shape03Chance = (int)(-1*multi) + 20;
-		shape04Chance = (int)(3*multi) - 10;
-		shape05Chance = (int)(2*multi) - 5;
-		shape00Chance = (int)(1.5*multi);
-		shape06Chance = (int)(1.5*multi);
+			shape01Chance = (int)(-2.5*multi) + 40;
+			shape02Chance = (int)(-3*multi) + 40;
+			shape03Chance = (int)(-1*multi) + 20;
+			shape04Chance = (int)(3*multi) - 10;
+			shape05Chance = (int)(2*multi) - 5;
+			shape00Chance = (int)(1.5*multi);
+			shape06Chance = (int)(1.5*multi);
 		}
-
-	
+		
+		
 		else if (multiplier > 10) {
-
-				shape01Chance = 0;
-				shape02Chance = 0;
-				shape03Chance = 0;
-				shape04Chance = 35;
-				shape05Chance = 40;
-				shape00Chance = 20;
-				shape06Chance = 5;
+			
+			shape01Chance = 0;
+			shape02Chance = 0;
+			shape03Chance = 0;
+			shape04Chance = 35;
+			shape05Chance = 40;
+			shape00Chance = 20;
+			shape06Chance = 5;
 		}
 	}
-
+	
 	void GameOver(){
+
+		DetermineGameState ();
+
+		UpdateUIScore ();
 		//highestMultiplier = topMultiplier;
 		SaveScore ();
-		gameState = "Game Over";
+
 		//gameOver = true;
 		//Debug.Log ("GAME OVER Score: " + currentScore + "Best: " + previousScore+ "/n TopMulti: " +topMultiplier + " HighMulti: "+highestMultiplier);
 		Achievements ();
+
+		resetButton.gameObject.SetActive (true);
+
 		Time.timeScale = 0;
-	
+		
 	}
 
+	void DetermineGameState(){
+
+		if (winningButtonCount > buttonCount && gameState == "FLOW") {
+						gameState = "Game Over";
+				} else {
+			gameState = "Level Complete!";		
+		}
+
+	}
+	
 	void SaveScore() {
 		if (PlayerPrefs.HasKey("Highscore")) {
 			if (PlayerPrefs.GetInt("Highscore") < currentScore) {
@@ -158,25 +181,25 @@ public class Variables : MonoBehaviour {
 			}
 		} else {
 			PlayerPrefs.SetInt("Highscore", currentScore);
-
+			
 		}
-
+		
 		SaveMulti ();
-
+		
 		//Achievements
 		if (PlayerPrefs.HasKey("Achievements")) {
 			if (PlayerPrefs.GetString("Achievements") != achievementBools) {
 				PlayerPrefs.SetString("Achievements", achievementBools);
-
+				
 			}
 		} else {
 			PlayerPrefs.SetString("Achievements", achievementBools);
 			
 		}
-
+		
 		PlayerPrefs.Save();
 	}
-
+	
 	void SaveMulti(){
 		if (PlayerPrefs.HasKey("HighMulti")) {
 			if (PlayerPrefs.GetInt("HighMulti") < topMultiplier) {
@@ -185,7 +208,7 @@ public class Variables : MonoBehaviour {
 		} else {
 			PlayerPrefs.SetInt("HighMulti", topMultiplier);
 		}
-	
+		
 	}
 	
 	void LoadScore() {
@@ -194,56 +217,56 @@ public class Variables : MonoBehaviour {
 		}
 		if (PlayerPrefs.HasKey("HighMulti")) {
 			highestMultiplier = PlayerPrefs.GetInt("HighMulti");
-		//	Debug.Log(PlayerPrefs.GetInt("HighMulti"));
+			//	Debug.Log(PlayerPrefs.GetInt("HighMulti"));
 		}
-
+		
 		if (PlayerPrefs.HasKey("Achievements")) {
 			achievementBools = PlayerPrefs.GetString("Achievements");
 		}
 	}
-
-	void Achievements(){
 	
+	void Achievements(){
+		
 		if (achievementStrings.Length < 1) {
-						//Debug.Log ("No achievements yet");
-				} 
+			//Debug.Log ("No achievements yet");
+		} 
 		else {
 			//Debug.Log("Achievements:");
-	
+			
 			//ACHIEVMENTS
-						//1 million
+			//1 million
 			if (achievementStrings [1].Length < 1) {
-
-								
-
-								if (previousScore >= 1000) {
-		
-										//Debug.Log ("Achievement added: Your first grand!");
-
-								}
-						}
+				
+				
+				
+				if (previousScore >= 1000) {
+					
+					//Debug.Log ("Achievement added: Your first grand!");
+					
 				}
-
+			}
+		}
+		
 		AchievementParse ();
-
+		
 	}
 	void AchievementParse(){
-
+		
 		for (int i = 0; i < achievementStrings.Length; i++) {
-
+			
 			if (achievementStrings[i].Length > 0){
-
+				
 				achievementBools = achievementBools + "1";
-
+				
 			}
 			else if (achievementStrings[i].Length < 1){
-
+				
 				achievementBools = achievementBools + "0";
-
+				
 			}
-
-				}
-
+			
+		}
+		
 	}
-
+	
 }
