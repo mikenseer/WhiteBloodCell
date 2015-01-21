@@ -2,26 +2,27 @@ using UnityEngine;
 using System.Collections;
 
 public class ShapeTracker : MonoBehaviour {
-
 	
-	private int[] cargoBay;
+	
+	public int[] cargoBay;
 	private int cargoBaySize = 5;
 	
 	
-
+	
 	public Timer timer;
 	public Button button;
-
+	
 	// Use this for initialization
 	void Start () {
 		//button.gameObject.SetActive (false);
 		
-		//Set starting required counts.
-	
+
+		cargoBay  = new int [cargoBaySize];
+		
 	}
 	
-
-
+	
+	
 	//When shape hits player.
 	void OnTriggerEnter2D (Collider2D obj)  {
 		
@@ -52,49 +53,66 @@ public class ShapeTracker : MonoBehaviour {
 		//		CargoBay(7);	
 		//}
 
-		ActiveButton(cargoBay.length);
-		
-		
-		
-	
-	}
 
-	void CargoBay(int shapeNum){
+
+		ActiveButton();
+		
+		
+		
+		
+	}
 	
-	//First in First out loop to track the shapes in cargoBay.
-		for ( int = 0; i < cargoBaySize; i++)
+	void CargoBay(int shapeNum){
+		
+		//First in First out loop to track the shapes in cargoBay.
+		for ( int i = 0; i < cargoBaySize; i++)
 		{
-			if (cargoBay[i] == null){
+			if (cargoBay[i] == 0){
 				cargoBay[i] = shapeNum;
+				//Debug.Log(cargoBay[i] + " Added");
+				Debug.Log(cargoBay[0] + " " +cargoBay[1] +" " +cargoBay[2] +" " +cargoBay[3] +" " +cargoBay[4] );
+				break;
 			}
-			else //if (cargoBay.Length == cargoBaySize)
+			else if (cargoBay[cargoBaySize - 1] != 0)
 			{
-			
-				foreach (int n in cargoBay)
+				
+				for ( int n = 0; n < cargoBaySize; n++)
 				{
 					if (n <  (cargoBaySize - 1)  ){
-					cargoBay[n] = cargoBay[n++];
+						cargoBay[n] = cargoBay[n+1];
+						//Debug.Log (cargoBay[n] + "replaced with " + cargoBay[n+1]);
+						//Debug.Log(cargoBay[0] + " " +cargoBay[1] +" " +cargoBay[2] +" " +cargoBay[3] +" " +cargoBay[4] );
+
 					}
 					else {
-					cargoBay[cargoBaySize - 1] = shapeNum;
+						cargoBay[cargoBaySize - 1] = shapeNum;
+
+						Debug.Log(cargoBay[0] + " " +cargoBay[1] +" " +cargoBay[2] +" " +cargoBay[3] +" " +cargoBay[4] );
+						break;
 					}
 					
 				}
+				break;
 			}
 		}
-	
+		
 	}
 	
 	//Activate the button when cargo bay is full
-	void ActiveButton(int count){
-	
-	//CargoBay is full
-		if (count >= cargoBaySize) {
-			
-			button.gameObject.SetActive(true);
-		
+	void ActiveButton(){
+		int count = cargoBaySize;
+		//CargoBay is full
+		for ( int i = 0; i < cargoBaySize; i++)
+		{
+			if (cargoBay[i] != 0){
+				count--;
+			}
 		}
-	
-	
+
+		if (count == 0) {
+			button.gameObject.SetActive	(true);
+				}
+		
+		
 	}
 }
