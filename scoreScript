@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Collections;
 
 public class scoreScript : MonoBehaviour {
-
+	
 	public Variables vars;
-
+	
 	public GUIText guiText;
-
+	
 	public Timer timer;
-
+	
 	private int currentScore;
 	private int scoreMultiplier;
 	private int bonusMultiplier;
@@ -16,25 +16,25 @@ public class scoreScript : MonoBehaviour {
 	private int multiCount;
 	private int playerLives;
 	private int powerCount;
-
+	
 	// Use this for initialization
 	void Start () {
-
+		
 		//vars.currentScore = 0;
-
-
+		
+		
 		//Variables
 		GameObject v1 = GameObject.FindGameObjectWithTag ("Variables");
 		vars = v1.GetComponent<Variables> ();
-
-
-
+		
+		
+		
 		scoreCount = vars.scoreCount;
 		multiCount = vars.multiCount;
 		scoreMultiplier = vars.scoreMultiplier;
 		playerLives = vars.playerLives;
 	}
-
+	
 	//WHEN OBJECT HITS PLAYER
 	void OnTriggerEnter2D (Collider2D obj)  {
 		
@@ -45,20 +45,20 @@ public class scoreScript : MonoBehaviour {
 		playerLives = vars.playerLives;
 		
 		string name = obj.gameObject.tag;
-
-	//square
+		
+		//square
 		if (name == "Shape01") {
-
+			
 			UpdateScore(1,10,multiCount,scoreMultiplier,bonusMultiplier);
-
-
+			
+			
 			
 		}
 		//circle
 		if (name == "Shape02") {
 			
 			UpdateScore(1,10,multiCount,scoreMultiplier,bonusMultiplier);
-
+			
 			
 			
 		}
@@ -66,7 +66,7 @@ public class scoreScript : MonoBehaviour {
 		if (name == "Shape03") {
 			
 			UpdateScore(1,10,multiCount,scoreMultiplier,bonusMultiplier);
-
+			
 			
 			
 		}
@@ -74,7 +74,7 @@ public class scoreScript : MonoBehaviour {
 		if (name == "Shape04") {
 			
 			UpdateScore(1,25,multiCount,scoreMultiplier,bonusMultiplier);
-
+			
 			
 			
 		}
@@ -82,15 +82,15 @@ public class scoreScript : MonoBehaviour {
 		if (name == "Shape05") {
 			
 			UpdateScore(1,50,multiCount,scoreMultiplier,bonusMultiplier);
-
+			
 			
 			
 		}
 		//BONUS
 		if (name == "Shape00") {
-
+			
 			UpdateScore(-1,0,multiCount,scoreMultiplier,bonusMultiplier);
-
+			
 			
 		}
 		//Penalty shape
@@ -101,99 +101,127 @@ public class scoreScript : MonoBehaviour {
 			
 		}
 	}
-
-
+	
+	
 	void UpdateScore(int scoreType, int scoreValue, int multiCount, int multi,int bonusMulti) {
-
+		
 		//For hitting shape
 		if (scoreType ==1) {
-
+			
 			//multiplier count that will reset when shape is missed.
 			multiCount++;
 			
 			//Count total shapes collected
 			vars.scoreCount++;
 			//CalculateMultiplier(vars.multiCount, vars.scoreMultiplier);
-
-			if (bonusMulti > multi){
-			vars.currentScore+= scoreValue * (CalculateMultiplier(multiCount, multi) + powerCount);
+			
+			if (bonusMulti > multi && bonusMulti > 10){
+				vars.currentScore+= scoreValue * (CalculateMultiplier(multiCount, multi) + powerCount);
 			}
 			else{
-			vars.currentScore+= scoreValue * CalculateMultiplier(multiCount, multi);
+				vars.currentScore+= scoreValue * CalculateMultiplier(multiCount, multi);
 			}
 			
 			//reduce bonuses
 			if (powerCount > 0){
-			vars.powerCount--;
-			
+				vars.powerCount--;
+				
 			}
-			if (bonusMultiplier > multi){
-			vars.bonusMultiplier--;
+			if (bonusMulti > multi && bonusMulti > 10){
+				vars.bonusMultiplier--;
 			}
 		}
-
+		
 		//Bonus shape, increase multiplier
 		if (scoreType == -1) {
+
+			if (bonusMulti >= multi && bonusMulti >= 10){
+
 			vars.powerCount += 3;
+				vars.bonusMultiplier = bonusMultiplier + 3;
+			}
+			else{
 
+				vars.scoreMultiplier = scoreMultiplier + 1;
+				vars.bonusMultiplier = scoreMultiplier + 1;
+			}
+			
 			//Adds a bonusMultiplier.  That way you don't just gain multipliers and jump through levels.
-			vars.bonusMultiplier = scoreMultipler + 3;
 
+			
 		}
-
+		
 		//Penalty shape
 		if (scoreType == 0) {
-		
+			
 			//If under powerup, shape doesn't hurt, just removes powerup.
-		
+			
 			if (powerCount > 0){
-			vars.powerCount = 0;
+				vars.powerCount = 0;
+			}
+
+			if (scoreMultiplier == 1)
+			{
+				vars.scoreMultiplier = 0;
+				vars.gameState = "Ran out of fuel!";
+				vars.gameOver = true;
 			}
 			
 			//lower multiplier, reduce time, and reset multicount
-			else {
-			vars.scoreMultiplier -=3;
-			timer.time -=5f;
-			vars.multiCount = 0;
+
+				vars.scoreMultiplier -=1;
+				timer.time -=5f;
+				vars.multiCount = (scoreMultiplier - 1) * 10;
+				
+				if(playerLives > 0){
+					vars.playerLives--;
+				}
+				else{
+					vars.gameOver = true;
+				}
+
 			
-			if(playerLives > 0){
-			vars.playerLives--;
-			}
-			else{
-			vars.gameOver = true;
-			}
-			}
-		
 		}
-	
+		
 	}
-
-
-
-	int CalculateMultiplier(int count, int multi){
-
-		int updatedMulti;
-		int potentialMulti;
 	
+	
+	
+
+
+
+	
+	
+	int CalculateMultiplier(int count, int multi){
+		
+		int updatedMulti = 1;
+		int potentialMulti = 1;
+		
 		//Determines how many shapes it takes in a row to get a multiplier.
 		potentialMulti = Mathf.RoundToInt((count + 10)/10);
-
+		
 		//If multiplier is above 10, reduce it by 1 (previously vars.scoreMultiplier--)
 		if (multi > 10) {
 			updatedMulti = multi - 1;
 			vars.scoreMultiplier = updatedMulti;
-			
-			} 
-			//If the calculated multiplier is greater than current multiplier but less than 10, update the multiplier to new.
-		else if (potentialMulti > multi && multi < 10)
-			{
-				updatedMulti = Mathf.Clamp (potentialMulti,0,10);
-				vars.scoreMultiplier = updatedMulti;
-			}
-		
-			vars.multiCount = count;
-			
-		return updatedMulti;	
 
+			
+				
+		} 
+		//If the calculated multiplier is greater than current multiplier but less than 10, update the multiplier to new.
+		else if (potentialMulti > multi && multi < 10)
+		{
+			updatedMulti = Mathf.Clamp (potentialMulti,0,10);
+			vars.scoreMultiplier = updatedMulti;
+
+			
+				
+		}
+		vars.multiCount = count;
+
+		//Debug.Log (updatedMulti);
+		return updatedMulti;
+
+		
 	}
 }
