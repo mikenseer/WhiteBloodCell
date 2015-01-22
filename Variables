@@ -16,8 +16,8 @@ public class Variables : MonoBehaviour {
 	
 	public int scoreCount;
 	public int multiCount;
-	public int scoreMultiplier = 1;
-	public int bonusMultiplier = 0;
+	public int scoreMultiplier = 2;
+	public int bonusMultiplier = 2;
 	public int topMultiplier;
 	public int highestMultiplier;
 	
@@ -39,6 +39,7 @@ public class Variables : MonoBehaviour {
 
 	public int buttonCount = 0;
 	public int winningButtonCount = 10;
+	public int winningScore = 10000;
 	
 	public bool isContinuation = false;
 	
@@ -166,9 +167,18 @@ public class Variables : MonoBehaviour {
 	void DetermineGameState(){
 
 		if (winningButtonCount > buttonCount && gameState == "FLOW") {
-						gameState = "Game Over";
-				} else {
-			gameState = "Level Complete!";		
+						gameState = "Try again! This area is still infected.";
+				} 
+		else {
+		//Checks if player scored enough.
+		//Will make this more robust later with 3 levels of "win".
+			if (currentScore >= winningScore)
+			{
+			gameState = "Area cleared!";	
+			}
+			else {
+			gameState = "Not enough germs killed!";
+			}
 		}
 
 	}
@@ -234,7 +244,7 @@ public class Variables : MonoBehaviour {
 			//Debug.Log("Achievements:");
 			
 			//ACHIEVMENTS
-			//1 million
+			//1 grand
 			if (achievementStrings [1].Length < 1) {
 				
 				
