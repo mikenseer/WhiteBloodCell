@@ -75,7 +75,7 @@ public class ShapeTracker : MonoBehaviour {
 				break;
 			}
 
-			//If cargoBay is full, remove oldest
+			//If cargoBay is full, remove oldest [May only let this happen when screen is being touched.]
 			else if (cargoBay[cargoBaySize - 1] != 0)
 			{
 
@@ -113,7 +113,7 @@ public class ShapeTracker : MonoBehaviour {
 		
 	}
 	
-	void CheckForThree(){
+	public void CheckForThree(){
 	
 	int shapeCode;
 	
@@ -134,6 +134,7 @@ public class ShapeTracker : MonoBehaviour {
 							cargoBay[i+1] = 0;
 							cargoBay[i+2] = 0;
 							
+							//Bonus score fir 3x match
 							vars.currentScore += shapeCode * 3 + 2;
 							
 							//slide remaining cargo to the left.
