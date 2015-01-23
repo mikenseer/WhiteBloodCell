@@ -5,9 +5,9 @@ public class ShapeTracker : MonoBehaviour {
 	
 	
 	public int[] cargoBay;
-	private int cargoBaySize = 5;
+	public int cargoBaySize = 5;
 	
-	
+	private Variables vars;
 	
 	public Timer timer;
 	public Button button;
@@ -15,7 +15,8 @@ public class ShapeTracker : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//button.gameObject.SetActive (false);
-		
+		GameObject v1 = GameObject.FindGameObjectWithTag ("Variables");
+		vars = v1.GetComponent<Variables> ();
 
 		cargoBay  = new int [cargoBaySize];
 		
@@ -73,17 +74,29 @@ public class ShapeTracker : MonoBehaviour {
 				Debug.Log(cargoBay[0] + " " +cargoBay[1] +" " +cargoBay[2] +" " +cargoBay[3] +" " +cargoBay[4] );
 				break;
 			}
+
+			//If cargoBay is full, remove oldest
 			else if (cargoBay[cargoBaySize - 1] != 0)
 			{
-				
+
+
 				for ( int n = 0; n < cargoBaySize; n++)
 				{
+					//move over the left most shapes, and remove the oldest
 					if (n <  (cargoBaySize - 1)  ){
+
+						if (n == 0 ){
+							//Adds the oldest shapes's value to infection.  Making overflowing a bad move!
+							vars.winningScore += cargoBay[0];
+						}
+
 						cargoBay[n] = cargoBay[n+1];
+
 						//Debug.Log (cargoBay[n] + "replaced with " + cargoBay[n+1]);
 						//Debug.Log(cargoBay[0] + " " +cargoBay[1] +" " +cargoBay[2] +" " +cargoBay[3] +" " +cargoBay[4] );
 
 					}
+					//The newest shape fills in
 					else {
 						cargoBay[cargoBaySize - 1] = shapeNum;
 
@@ -95,6 +108,10 @@ public class ShapeTracker : MonoBehaviour {
 				break;
 			}
 		}
+		// Check if 3 of same shape are touching
+		//for (int i = 0; i < cargoBaySize; i++) {
+		//		}
+
 		
 	}
 	
