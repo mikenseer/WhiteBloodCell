@@ -49,13 +49,13 @@ public class ShapeTracker : MonoBehaviour {
 		if (name == "Shape05") {			
 			CargoBay(5);
 		}
-		//bonus shape adds a little time
-		//if (name == "Shape07") {			
-		//		CargoBay(7);	
+		//blood cell
+		//if (name == "Shape00") {			
+		//		CargoBay(-1);	
 		//}
 
 
-
+		CheckForThree();
 		ActiveButton();
 		
 		
@@ -108,10 +108,63 @@ public class ShapeTracker : MonoBehaviour {
 				break;
 			}
 		}
-		// Check if 3 of same shape are touching
-		//for (int i = 0; i < cargoBaySize; i++) {
-		//		}
+		
 
+		
+	}
+	
+	void CheckForThree(){
+	
+	int shapeCode;
+	
+	// Check if 3 of same shape are touching
+		for (int i = 0; i < cargoBaySize; i++) {
+			
+			//Checks if shape exists
+			if (cargoBay[i] != 0){
+				//Sets shapeCode to the current shape in the bay. [unless its a bloodcell]
+				if (cargoBay[i] != -1){
+					shapeCode = cargoBay[i];				
+					//Checks if next slot has same shape
+					if (shapeCode == cargoBay[i+1]){
+						//Checks if third slot has same shape
+						if (shapeCode == cargoBay[i+2]){
+							//Clears the 3 shapes, gives points.
+							cargoBay[i] = 0;
+							cargoBay[i+1] = 0;
+							cargoBay[i+2] = 0;
+							
+							vars.currentScore += shapeCode * 3 + 2;
+							
+							//slide remaining cargo to the left.
+							if (cargoBay[i+3] != 0){
+								SlideLeft(i);
+							}
+						
+						}
+						
+					}
+				}
+			}
+		
+		}
+	}
+	
+	//Slides remaining shapes left
+	void SlideLeft(int loc)
+	{
+		//when left 3 match, slide right 2 shapes over
+		if (loc == 0){
+			cargoBay[loc] = cargoBay[loc+3];
+			cargoBay[loc+3] = 0;
+			cargoBay[loc + 1] = cargoBay[loc+4];
+			cargoBay[loc+4] = 0;
+		}
+		//when middle 3 match slide right shape over
+		if (loc == 1){
+			cargoBay[loc] = cargoBay[loc+3];
+			cargoBay[loc+3] = 0;
+		}
 		
 	}
 	
