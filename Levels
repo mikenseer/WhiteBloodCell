@@ -1,0 +1,82 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+public class Levels : MonoBehaviour {
+
+	private Variables vars;
+	private int currentLevel;
+	
+	void Start(){
+	
+		GameObject v1 = GameObject.FindGameObjectWithTag ("Variables");
+		vars = v1.GetComponent<Variables> ();
+		
+	}
+	
+	public void SelectLevel(int level){
+	
+		//TEST level
+		if (level == -1){
+		
+			ShapeChances(level);
+			ShapeSpeed(level);
+			vars.gameState = "Test Level";
+		
+		}
+		else if (level == 0){
+		
+			ShapeChances(level);
+			ShapeSpeed(level);
+			vars.gameState = "Test Fast Level";
+		
+		}
+	
+	}
+	
+	void ShapeChances(int level){
+	
+		//TEST level
+		if (level == -1){
+		
+			vars.shape01Chance = 20;
+			vars.shape02Chance = 20;
+			vars.shape03Chance = 10;
+			vars.shape04Chance = 0;
+			vars.shape05Chance = 0;
+			vars.shape00Chance = 0;
+			vars.shape06Chance = 50;
+			vars.shape07Chance = 0;
+		}
+		else if (level == 0){
+		
+			vars.shape01Chance = 0;
+			vars.shape02Chance = 20;
+			vars.shape03Chance = 20;
+			vars.shape04Chance = 0;
+			vars.shape05Chance = 0;
+			vars.shape00Chance = 0;
+			vars.shape06Chance = 60;
+			vars.shape07Chance = 0;
+		}
+	
+	}
+	
+	void ShapeSpeed(int level){
+	
+		//TEST level
+		if (level == -1){
+		
+			vars.fallSpeedV = -4f;
+			vars.spawnTimeV = .3f;
+		
+		}
+		else if (level == -1){
+		
+			vars.fallSpeedV = -8f;
+			vars.spawnTimeV = .3f;
+		
+		}
+		
+	}
+}
