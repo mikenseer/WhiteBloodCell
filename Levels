@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Levels : MonoBehaviour {
 
 	private Variables vars;
+	private ShapeTracker st;
 	private int currentLevel;
 	
 	void Start(){
@@ -12,33 +13,24 @@ public class Levels : MonoBehaviour {
 		GameObject v1 = GameObject.FindGameObjectWithTag ("Variables");
 		vars = v1.GetComponent<Variables> ();
 		
+		GameObject v1 = GameObject.FindGameObjectWithTag ("Player");
+		st = v1.GetComponent<ShapeTracker> ();
 	}
 	
+	//The level int represents the level. 1 = 1, 2 = 2, etc.  less than 1 = test levels.
 	public void SelectLevel(int level){
 	
-		//TEST level
-		if (level == -1){
-		
 			ShapeChances(level);
 			ShapeSpeed(level);
-			vars.gameState = "Test Level";
-		
-		}
-		else if (level == 0){
-		
-			ShapeChances(level);
-			ShapeSpeed(level);
-			vars.gameState = "Test Fast Level";
-		
-		}
-	
+			CargoBay(level);
+			Infection(level);
+
 	}
 	
 	void ShapeChances(int level){
 	
-		//TEST level
 		if (level == -1){
-		
+		vars.gameState = "Test Level -1";
 			vars.shape01Chance = 20;
 			vars.shape02Chance = 20;
 			vars.shape03Chance = 10;
@@ -49,7 +41,7 @@ public class Levels : MonoBehaviour {
 			vars.shape07Chance = 0;
 		}
 		else if (level == 0){
-		
+		vars.gameState = "Test Level 0";
 			vars.shape01Chance = 0;
 			vars.shape02Chance = 20;
 			vars.shape03Chance = 20;
@@ -57,6 +49,17 @@ public class Levels : MonoBehaviour {
 			vars.shape05Chance = 0;
 			vars.shape00Chance = 0;
 			vars.shape06Chance = 60;
+			vars.shape07Chance = 0;
+		}
+		else if (level == 1){
+		vars.gameState = "Well that was quick!";
+			vars.shape01Chance = 100;
+			vars.shape02Chance = 0;
+			vars.shape03Chance = 0;
+			vars.shape04Chance = 0;
+			vars.shape05Chance = 0;
+			vars.shape00Chance = 0;
+			vars.shape06Chance = 0;
 			vars.shape07Chance = 0;
 		}
 	
@@ -71,12 +74,42 @@ public class Levels : MonoBehaviour {
 			vars.spawnTimeV = .3f;
 		
 		}
-		else if (level == -1){
+		else if (level == 0){
 		
 			vars.fallSpeedV = -8f;
 			vars.spawnTimeV = .3f;
 		
 		}
+		else if (level == 1){
 		
+			vars.fallSpeedV = -3f;
+			vars.spawnTimeV = .9f;
+		
+		}
+		
+	}
+	
+	void CargoBay (int level){
+		if (level == -1){
+			st.maxCargoBaySize = 5;
+		}
+		else if (level == 0){
+			st.maxCargoBaySize = 5;
+		}
+		else if (level == 1){
+			st.maxCargoBaySize = 3;
+		}
+	}
+	
+	void Infection(int level){
+		if (level == -1){
+			vars.winningScore = 80;
+		}
+		else if (level == 0){
+			vars.winningScore = 80;
+		}
+		else if (level == 1){
+			vars.winningScore = 5;
+		}
 	}
 }
