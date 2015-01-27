@@ -24,6 +24,7 @@ public class Levels : MonoBehaviour {
 			ShapeSpeed(level);
 			CargoBay(level);
 			Infection(level);
+			ArtAssets(level);
 
 	}
 	
@@ -165,5 +166,11 @@ public class Levels : MonoBehaviour {
 			vars.winningScore = 20;
 			//losingTime = 60f;
 		}
+	}
+	
+	void ArtAssets(int level){
+		//Sets art assets to use per level. i.e. yellow for stomach, red for heart, etc.
+		
+	
 	}
 }
